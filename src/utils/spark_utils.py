@@ -37,12 +37,21 @@ def get_spark_session(config: Dict[str, Any] | None = None) -> Any:
     sql_shuffle_partitions = spark_cfg.get("sql_shuffle_partitions", 8)
     log_level = spark_cfg.get("log_level", "WARN")
 
+    import os
+    import sys
+
+    # Bind Python executable to the current active environment (.venv)
+    os.environ["PYSPARK_PYTHON"] = sys.executable
+    os.environ["PYSPARK_DRIVER_PYTHON"] = sys.executable
+
     builder = (
         SparkSession.builder.appName(app_name)
         .master(master)
         .config("spark.driver.memory", driver_mem)
         .config("spark.sql.shuffle.partitions", str(sql_shuffle_partitions))
         .config("spark.ui.enabled", "false")  # Avoid port conflicts in local dev
+        .config("spark.driver.host", "127.0.0.1")  # Loopback avoids Windows firewall blocks
+        .config("spark.driver.bindAddress", "127.0.0.1")
     )
 
     spark = builder.getOrCreate()
