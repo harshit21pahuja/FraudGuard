@@ -33,8 +33,9 @@ datasets:
 
   dataset_b:
     name: "Credit Card Fraud Detection (European Cardholders)"
-    candidate_status: "Proposed Candidate 1 (Pending User Confirmation)"
+    candidate_status: "Finalized (ULB Machine Learning Group)"
     type: "Real-world (ULB Machine Learning Group)"
+    source_url: "https://www.kaggle.com/datasets/mlg-ulb/creditcardfraud"
     raw_dir: "data/raw/creditcard"
     transaction_file: "creditcard.csv"
     target_column: "Class"
