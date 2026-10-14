@@ -56,11 +56,11 @@ def load_config(config_path: str | None = None) -> Dict[str, Any]:
                     "join_key": "TransactionID",
                 },
                 "dataset_b": {
-                    "name": "Credit Card Fraud Detection (European Cardholders)",
-                    "candidate_status": "Proposed Candidate 1",
-                    "raw_dir": "data/raw/creditcard",
-                    "transaction_file": "creditcard.csv",
-                    "target_column": "Class",
+                    "name": "Dataset B (Pending User Approval)",
+                    "candidate_status": "Pending User Approval - Candidates Under Review",
+                    "raw_dir": "data/raw/dataset_b",
+                    "transaction_file": None,
+                    "target_column": None,
                 },
             },
             "models": {

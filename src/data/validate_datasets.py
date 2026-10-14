@@ -41,18 +41,25 @@ def validate_dataset_presence(config: Dict[str, Any] | None = None) -> Dict[str,
 
     # Dataset B
     cfg_b = config.get("datasets", {}).get("dataset_b", {})
-    raw_dir_b = root / cfg_b.get("raw_dir", "data/raw/creditcard")
-    data_file_b = raw_dir_b / cfg_b.get("transaction_file", "creditcard.csv")
+    raw_dir_b = root / cfg_b.get("raw_dir", "data/raw/dataset_b")
+    trans_file_name_b = cfg_b.get("transaction_file")
+    if trans_file_name_b:
+        data_file_b = raw_dir_b / trans_file_name_b
+        file_exists = data_file_b.exists()
+        file_size = round(data_file_b.stat().st_size / (1024 * 1024), 2) if file_exists else 0.0
+        file_path_str = str(data_file_b)
+    else:
+        file_exists = False
+        file_size = 0.0
+        file_path_str = "Not configured yet (Pending User Approval)"
 
     report["dataset_b"] = {
         "name": cfg_b.get("name", "Dataset B"),
-        "candidate_status": cfg_b.get("candidate_status", "Pending Confirmation"),
-        "file_path": str(data_file_b),
-        "file_exists": data_file_b.exists(),
-        "file_size_mb": round(data_file_b.stat().st_size / (1024 * 1024), 2)
-        if data_file_b.exists()
-        else 0.0,
-        "ready": data_file_b.exists(),
+        "candidate_status": cfg_b.get("candidate_status", "Pending User Approval"),
+        "file_path": file_path_str,
+        "file_exists": file_exists,
+        "file_size_mb": file_size,
+        "ready": file_exists,
     }
 
     return report
