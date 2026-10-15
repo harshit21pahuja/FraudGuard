@@ -1,2 +1,2 @@
 dataset_name,total_records,legitimate_records,fraud_records,fraud_prevalence_pct,train_records,val_records,test_records,numerical_features,categorical_features
-IEEE-CIS Fraud Detection,200,187,13,6.5,140,30,30,8,5
+IEEE-CIS Fraud Detection,250,234,16,6.4,175,38,37,8,5

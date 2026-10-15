@@ -33,6 +33,10 @@ ENV/
 env.bak/
 venv.bak/
 
+# Temporary office and system lock files
+~$*
+*.tmp
+
 # IDE files
 .idea/
 .vscode/

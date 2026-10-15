@@ -1,0 +1,3 @@
+isFraud,count,min_amount,avg_amount,stddev_amount,max_amount,class_label
+0,234,10.09,92.34,80.67,488.33,Legitimate
+1,16,254.94,611.45,248.33,959.66,Fraudulent

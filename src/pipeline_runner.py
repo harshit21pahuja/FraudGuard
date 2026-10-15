@@ -222,6 +222,12 @@ def run_pipeline(
     overview_df.to_csv(summaries_dir / "dataset_summary.csv", index=False)
     overview_df.to_csv(powerbi_dir / "dataset_summary.csv", index=False)
 
+    # Export EDA Pattern Summaries for Power BI Page 2
+    logger.info("Exporting EDA pattern distributions for Power BI Page 2...")
+    from src.features.eda import export_eda_reports
+    export_eda_reports(full_df, powerbi_dir)
+    export_eda_reports(full_df, summaries_dir)
+
     # 9. Generate Publication-Quality Visualizations
     logger.info("Generating academic report figures in outputs/figures/...")
     plot_model_comparison(results_df, figures_dir / "model_comparison_bar_chart.png")

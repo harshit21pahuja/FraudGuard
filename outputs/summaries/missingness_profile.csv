@@ -1,0 +1,17 @@
+column_name,null_count,missing_percentage
+DeviceType,82,32.8
+D1,16,6.4
+V2,12,4.8
+P_emaildomain,4,1.6
+TransactionAmt,0,0.0
+TransactionID,0,0.0
+TransactionDT,0,0.0
+isFraud,0,0.0
+card6,0,0.0
+card4,0,0.0
+ProductCD,0,0.0
+card1,0,0.0
+C1,0,0.0
+card2,0,0.0
+C2,0,0.0
+V1,0,0.0

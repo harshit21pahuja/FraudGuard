@@ -1,0 +1,6 @@
+ProductCD,total_transactions,fraud_transactions,legitimate_transactions,fraud_rate_pct
+C,62,9,53,14.52
+R,56,7,49,12.5
+W,51,0,51,0.0
+S,51,0,51,0.0
+H,30,0,30,0.0

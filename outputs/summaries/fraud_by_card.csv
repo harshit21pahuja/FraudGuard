@@ -1,0 +1,4 @@
+card4,total_transactions,fraud_transactions,legitimate_transactions,fraud_rate_pct
+visa,93,3,90,3.23
+discover,82,10,72,12.2
+mastercard,75,3,72,4.0
