@@ -44,20 +44,32 @@ def generate_mock_ieee_cis_data(
         trans_id = 3000000 + i
         # Simulate time progression
         trans_dt = base_time + (i * 300) + random.randint(0, 100)
-        # 5% fraud probability
-        is_fraud = 1 if random.random() < fraud_rate else 0
-        amt = round(random.expovariate(1 / 100.0) + 5.0, 2)
+        
+        # Ensure fraud occurs periodically throughout the timeline so train, val, and test all receive fraud cases
+        is_fraud = 1 if (i % int(1.0 / fraud_rate) == 0 or random.random() < (fraud_rate * 0.5)) else 0
 
-        prod = random.choice(product_codes)
+        # Inject realistic fraud patterns (high amounts, suspicious domains, extreme velocity)
+        if is_fraud == 1:
+            amt = round(random.uniform(250.0, 1200.0), 2)
+            p_email = random.choice(["anonymous.com", "mailinator.com", None])
+            c1 = random.randint(15, 50)  # High transaction count/velocity
+            c2 = random.randint(10, 40)
+            v1 = float(random.choice([2, 3, 4]))
+            v2 = float(random.choice([3, 4, 5]))
+            prod = random.choice(["C", "R"])
+        else:
+            amt = round(random.expovariate(1 / 80.0) + 10.0, 2)
+            p_email = random.choice(["gmail.com", "yahoo.com", "hotmail.com"])
+            c1 = random.randint(1, 5)
+            c2 = random.randint(1, 4)
+            v1 = float(random.choice([0, 1]))
+            v2 = float(random.choice([0, 1]))
+            prod = random.choice(product_codes)
+
         c4 = random.choice(card_types)
         c6 = random.choice(card_tiers)
-        p_email = random.choice(domains)
         dev = random.choice(devices)
-
-        c1 = random.randint(1, 10)
-        c2 = random.randint(1, 10)
         d1 = float(random.randint(0, 100)) if random.random() > 0.1 else None
-        v1 = float(random.choice([0, 1, 2])) if random.random() > 0.05 else None
         v2 = float(random.choice([0, 1, 2])) if random.random() > 0.05 else None
 
         rows.append(

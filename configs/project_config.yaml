@@ -53,22 +53,22 @@ dev_mode:
 
 models:
   logistic_regression:
-    max_iter: 100
+    max_iter: 40
     reg_param: 0.01
     elastic_net_param: 0.0
   decision_tree:
     max_depth: 6
     max_bins: 32
   random_forest:
-    num_trees: 50
-    max_depth: 8
+    num_trees: 25
+    max_depth: 6
     max_bins: 32
   gbt:
-    max_iter: 40
-    max_depth: 5
+    max_iter: 20
+    max_depth: 4
     step_size: 0.1
   linear_svc:
-    max_iter: 100
+    max_iter: 30
     reg_param: 0.01
 
 risk_analysis:
