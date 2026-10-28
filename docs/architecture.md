@@ -28,11 +28,11 @@ FraudGuard is an offline big data analytics and machine learning decision-suppor
                               v
 +-------------------------------------------------------------+
 |              Model Training & Optimization Layer            |
-|  - Logistic Regression                                      |
-|  - Decision Tree Classifier                                 |
-|  - Random Forest Classifier                                 |
-|  - Gradient-Boosted Trees (GBTClassifier)                   |
-|  - Linear Support Vector Machine (LinearSVC)                |
+|  - Logistic Regression (Spark ML Baseline)                  |
+|  - Random Forest Classifier (Spark ML Ensemble Baseline)     |
+|  - XGBoost Classifier (Advanced Gradient Boosting)          |
+|  - LightGBM Classifier (Advanced Gradient Boosting)         |
+|  - CatBoost Classifier (Advanced Gradient Boosting)         |
 +-------------------------------------------------------------+
                               |
                               v
@@ -54,4 +54,5 @@ FraudGuard is an offline big data analytics and machine learning decision-suppor
 ## 2. Spark Pipeline Design Principles
 - **Lazy Evaluation & Partitioning**: Spark DataFrames utilize catalyst optimization and shuffle partitioning configured to resource capacity (`local[*]` or cluster nodes).
 - **Strict Leakage Prevention**: Preprocessing transformers (imputers, scalers, indexers) are fitted strictly on `train_df`. Validation and test splits are transformed using the fitted pipeline models.
+- **Hybrid Boosting Integration**: To execute XGBoost, LightGBM, and CatBoost on Windows without JVM/Maven worker deadlocks, a normalized `BoostedSparkModelWrapper` converts Spark vector features into predictions and returns Spark DataFrames with standard schema (`rawPrediction`, `probability`, `prediction`), maintaining seamless interoperability with PySpark's `BinaryClassificationEvaluator`.
 - **Memory Management**: Intermediate clean joins are persisted as Parquet files to eliminate redundant CSV re-parsing and re-computation.

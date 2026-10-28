@@ -56,20 +56,24 @@ models:
     max_iter: 40
     reg_param: 0.01
     elastic_net_param: 0.0
-  decision_tree:
-    max_depth: 6
-    max_bins: 32
   random_forest:
     num_trees: 25
     max_depth: 6
     max_bins: 32
-  gbt:
-    max_iter: 20
-    max_depth: 4
-    step_size: 0.1
-  linear_svc:
-    max_iter: 30
-    reg_param: 0.01
+  xgboost:
+    n_estimators: 30
+    max_depth: 5
+    learning_rate: 0.1
+  lightgbm:
+    n_estimators: 30
+    max_depth: 5
+    learning_rate: 0.1
+    verbose: -1
+  catboost:
+    iterations: 30
+    depth: 5
+    learning_rate: 0.1
+    verbose: 0
 
 risk_analysis:
   threshold_min: 0.05

@@ -50,44 +50,34 @@ def scan_decision_thresholds(
             "Ensure the model supports calibrated probability outputs."
         )
 
-    # Extract probability of positive class (fraud = index 1)
-    df_prob = predictions.withColumn("fraud_prob", vector_to_array(F.col(prob_col))[1])
-    total_records = df_prob.count()
+    import numpy as np
+
+    # Collect label and fraud probability once to eliminate redundant Spark shuffles per threshold
+    rows = predictions.select(
+        label_col, vector_to_array(F.col(prob_col))[1].alias("fraud_prob")
+    ).collect()
+    total_records = len(rows)
+    if total_records == 0:
+        return []
+
+    y_true = np.array([int(r[label_col]) for r in rows], dtype=np.int32)
+    y_prob = np.array([float(r["fraud_prob"]) for r in rows], dtype=np.float32)
 
     results: List[Dict[str, Any]] = []
     current_thresh = min_thresh
 
     logger.info(
-        f"Scanning decision thresholds from {min_thresh} to {max_thresh} (step={step})..."
+        f"Scanning decision thresholds from {min_thresh} to {max_thresh} (step={step}) across {total_records} records..."
     )
 
     while current_thresh <= (max_thresh + 1e-6):
         t = round(current_thresh, 2)
-        # Classify with threshold t
-        pred_df = df_prob.withColumn(
-            "threshold_pred",
-            F.when(F.col("fraud_prob") >= t, 1).otherwise(0),
-        )
+        y_pred = (y_prob >= t).astype(np.int32)
 
-        counts = (
-            pred_df.groupBy(label_col, "threshold_pred")
-            .count()
-            .collect()
-        )
-
-        tp = tn = fp = fn = 0
-        for row in counts:
-            lbl = int(row[label_col])
-            pred = int(row["threshold_pred"])
-            cnt = int(row["count"])
-            if lbl == 1 and pred == 1:
-                tp = cnt
-            elif lbl == 0 and pred == 0:
-                tn = cnt
-            elif lbl == 0 and pred == 1:
-                fp = cnt
-            elif lbl == 1 and pred == 0:
-                fn = cnt
+        tp = int(np.sum((y_true == 1) & (y_pred == 1)))
+        tn = int(np.sum((y_true == 0) & (y_pred == 0)))
+        fp = int(np.sum((y_true == 0) & (y_pred == 1)))
+        fn = int(np.sum((y_true == 1) & (y_pred == 0)))
 
         precision = round(tp / (tp + fp), 4) if (tp + fp) > 0 else 0.0
         recall = round(tp / (tp + fn), 4) if (tp + fn) > 0 else 0.0

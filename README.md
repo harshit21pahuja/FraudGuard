@@ -25,22 +25,26 @@ FraudGuard is an offline, big data decision-support system designed to detect fr
 ---
 
 ## 3. Technology Stack
-- **Language**: Python 3.10+ / 3.11+
+- **Language**: Python 3.10+ / 3.11+ / 3.13
 - **Big Data Processing**: Apache Spark / PySpark (Spark DataFrames)
-- **Machine Learning**: Spark ML (`pyspark.ml`)
+- **Machine Learning**: Spark ML (`pyspark.ml`), XGBoost (`xgboost`), LightGBM (`lightgbm`), CatBoost (`catboost`)
+- **Evaluation & Metrics**: Scikit-Learn (verification & AUC), PySpark BinaryClassificationEvaluator
 - **Visual Analytics**: Matplotlib, Seaborn
 - **Business Intelligence**: Microsoft Power BI Desktop
 - **Configuration & Reproducibility**: YAML, PyTest, Git / GitHub
 
 ---
 
-## 4. Required Machine Learning Classifiers
-All models are implemented using native Spark ML APIs (`pyspark.ml`):
-1. **Logistic Regression** (`pyspark.ml.classification.LogisticRegression`)
-2. **Decision Tree Classifier** (`pyspark.ml.classification.DecisionTreeClassifier`)
-3. **Random Forest Classifier** (`pyspark.ml.classification.RandomForestClassifier`)
-4. **Gradient-Boosted Trees** (`pyspark.ml.classification.GBTClassifier`)
-5. **Linear Support Vector Machine** (`pyspark.ml.classification.LinearSVC`)
+## 4. Final Machine Learning Classifiers
+Following academic faculty feedback requesting state-of-the-art gradient boosting algorithms, the final model suite consists of 5 classifiers evaluated on identical held-out partitions:
+
+1. **Logistic Regression** (`pyspark.ml.classification.LogisticRegression`) — *Baseline model* providing an interpretable reference point.
+2. **Random Forest Classifier** (`pyspark.ml.classification.RandomForestClassifier`) — *Ensemble baseline* capturing nonlinear feature interactions.
+3. **XGBoost Classifier** (`xgboost.XGBClassifier`) — *Advanced boosting model* for high-accuracy structured financial transactions.
+4. **LightGBM Classifier** (`lightgbm.LGBMClassifier`) — *Advanced boosting model* optimized for leaf-wise tree growth and fast execution.
+5. **CatBoost Classifier** (`catboost.CatBoostClassifier`) — *Advanced boosting model* with robust handling of numerical and categorical transaction signals.
+
+*Note: Obsolete candidates (standalone Decision Tree, generic Spark GBT, and Linear SVM) were retired from the final evaluation suite.*
 
 ---
 

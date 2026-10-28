@@ -1,6 +1,6 @@
 model_name,total_test_samples,true_positives,true_negatives,false_positives,false_negatives,precision,recall,f1_score,roc_auc,pr_auc,accuracy,training_time_sec
-logistic_regression,37,2,35,0,0,1.0,1.0,1.0,1.0,1.0,1.0,5.0
-decision_tree,37,2,35,0,0,1.0,1.0,1.0,1.0,1.0,1.0,1.04
-random_forest,37,2,35,0,0,1.0,1.0,1.0,1.0,1.0,1.0,1.22
-gbt,37,2,35,0,0,1.0,1.0,1.0,1.0,1.0,1.0,2.93
-linear_svc,37,2,35,0,0,1.0,1.0,1.0,1.0,1.0,1.0,37.51
+logistic_regression,75,6,69,0,0,1.0,1.0,1.0,1.0,1.0,1.0,12.78
+random_forest,75,6,69,0,0,1.0,1.0,1.0,1.0,1.0,1.0,5.55
+xgboost,75,6,69,0,0,1.0,1.0,1.0,1.0,1.0,1.0,0.3
+lightgbm,75,6,69,0,0,1.0,1.0,1.0,1.0,1.0,1.0,0.15
+catboost,75,6,69,0,0,1.0,1.0,1.0,1.0,1.0,1.0,0.53

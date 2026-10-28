@@ -19,6 +19,8 @@ class TestConfigAndStructure(unittest.TestCase):
         self.assertIn("dataset_b", config["datasets"])
         self.assertIn("models", config)
         self.assertEqual(len(config["models"]), 5)  # 5 required classifiers
+        expected_models = {"logistic_regression", "random_forest", "xgboost", "lightgbm", "catboost"}
+        self.assertEqual(set(config["models"].keys()), expected_models)
 
     def test_validate_dataset_presence(self):
         report = validate_dataset_presence()

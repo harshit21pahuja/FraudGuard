@@ -65,10 +65,10 @@ def load_config(config_path: str | None = None) -> Dict[str, Any]:
             },
             "models": {
                 "logistic_regression": {},
-                "decision_tree": {},
                 "random_forest": {},
-                "gbt": {},
-                "linear_svc": {},
+                "xgboost": {},
+                "lightgbm": {},
+                "catboost": {},
             },
         }
 

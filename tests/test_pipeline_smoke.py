@@ -60,9 +60,28 @@ class TestSparkMLPipelineSmoke(unittest.TestCase):
         test_trans = fitted_pipeline.transform(test_df).withColumnRenamed("isFraud", "label")
         self.assertIn("features", train_trans.columns)
 
-        # 5. Model training (Logistic Regression)
+        # 5. Model training (All 5 classifiers: LR, RF, XGB, LGB, CB)
         model, train_time = train_model("logistic_regression", train_trans, {"max_iter": 10})
         self.assertGreater(train_time, 0.0)
+
+        rf_model, rf_time = train_model("random_forest", train_trans, {"num_trees": 5, "max_depth": 3})
+        self.assertGreater(rf_time, 0.0)
+
+        xgb_model, xgb_time = train_model("xgboost", train_trans, {"n_estimators": 5, "max_depth": 3})
+        self.assertGreater(xgb_time, 0.0)
+        xgb_preds = xgb_model.transform(test_trans)
+        self.assertIn("prediction", xgb_preds.columns)
+        self.assertIn("probability", xgb_preds.columns)
+
+        lgb_model, lgb_time = train_model("lightgbm", train_trans, {"n_estimators": 5, "max_depth": 3})
+        self.assertGreater(lgb_time, 0.0)
+        lgb_preds = lgb_model.transform(test_trans)
+        self.assertIn("prediction", lgb_preds.columns)
+
+        cb_model, cb_time = train_model("catboost", train_trans, {"iterations": 5, "depth": 3})
+        self.assertGreater(cb_time, 0.0)
+        cb_preds = cb_model.transform(test_trans)
+        self.assertIn("prediction", cb_preds.columns)
 
         # 6. Evaluation on held-out test data
         predictions = model.transform(test_trans)

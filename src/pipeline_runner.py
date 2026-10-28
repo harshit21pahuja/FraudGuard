@@ -136,17 +136,17 @@ def run_pipeline(
     # 6. Model Training & Held-Out Evaluation (5 Classifiers)
     classifiers = [
         "logistic_regression",
-        "decision_tree",
         "random_forest",
-        "gbt",
-        "linear_svc",
+        "xgboost",
+        "lightgbm",
+        "catboost",
     ]
     model_configs = config.get("models", {})
     metrics_records: List[Dict[str, Any]] = []
     trained_models: Dict[str, Any] = {}
 
     logger.info("=" * 70)
-    logger.info("TRAINING & EVALUATION OF 5 SPARK ML CLASSIFIERS")
+    logger.info("TRAINING & EVALUATION OF 5 FRAUDGUARD CLASSIFIERS")
     logger.info("=" * 70)
 
     for m_name in classifiers:
@@ -165,13 +165,13 @@ def run_pipeline(
     print(results_df[["model_name", "precision", "recall", "f1_score", "roc_auc", "pr_auc", "training_time_sec"]].to_string(index=False))
 
     # 7. Decision Threshold & Operational Risk Analysis
-    # Use best probability-outputting model (e.g. Random Forest or GBT)
+    # Use advanced boosting model (e.g. XGBoost or Random Forest)
     logger.info("=" * 70)
     logger.info("OPERATIONAL RISK & DECISION THRESHOLD ANALYSIS")
     logger.info("=" * 70)
 
     risk_cfg = config.get("risk_analysis", {})
-    prob_model_name = "random_forest"
+    prob_model_name = "xgboost" if "xgboost" in trained_models else "random_forest"
     rf_preds = trained_models[prob_model_name].transform(test_prep)
 
     threshold_records = scan_decision_thresholds(

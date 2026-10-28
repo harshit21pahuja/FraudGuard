@@ -19,13 +19,26 @@ In extreme imbalance (e.g. 99.8% non-fraud), standard accuracy is a misleading m
 - **ROC-AUC**: Evaluates ranking capability across all possible thresholds; insensitive to class skew.
 - **PR-AUC (Precision-Recall AUC)**: Highly sensitive to the positive (minority) class; critical for fraud benchmark comparisons.
 
-## 4. Decision Threshold Analysis
-Spark ML classifiers output raw predictions based on a default 0.5 probability threshold. In fraud operations:
-- Lowering the threshold (e.g., 0.2) increases Recall (catches more fraud) at the expense of Precision (more False Positives).
-- Raising the threshold (e.g., 0.8) prioritizes Precision (fewer false alerts) at the expense of Recall.
-FraudGuard explicitly scans thresholds in steps of 0.05 across valid probability-producing models (Logistic Regression, Decision Tree, Random Forest, GBT) to map operational trade-off frontiers.
-*Note on LinearSVC*: Spark's `LinearSVC` outputs raw margins ($w^T x + b$) rather than calibrated probabilities; threshold analysis on LinearSVC is based on margin shifts or Platt scaling where appropriate.
+## 4. Final Machine Learning Model Suite
+Following academic guidance and faculty review, FraudGuard implements a structured comparison across five distinct classification paradigms:
 
-## 5. Cross-Dataset Comparison Boundaries
+| Model | Role in FraudGuard | Academic & Technical Rationale |
+| :--- | :--- | :--- |
+| **Logistic Regression** | Baseline | Provides a simple, interpretable linear reference for comparison against non-linear architectures. |
+| **Random Forest** | Ensemble baseline | Captures complex non-linear feature interactions through bagging of unpruned decision trees. |
+| **XGBoost** | Advanced boosting | State-of-the-art extreme gradient boosting with regularized objectives, highly effective on structured transaction features. |
+| **LightGBM** | Advanced boosting | High-performance gradient boosting using histogram-based algorithms and leaf-wise tree splitting. |
+| **CatBoost** | Advanced boosting | Robust symmetric (oblivious) trees with native handling of categorical relationships and resistance to overfitting. |
+
+*Obsolete Candidates*: Standalone Decision Tree, generic Spark GBTClassifier, and LinearSVC were retired from the final evaluation suite to emphasize modern gradient-boosting algorithms.
+
+## 5. Decision Threshold & Operational Risk Analysis
+Classifiers default to an arbitrary 0.5 probability decision threshold. In real-world fraud operations:
+- Lowering the threshold (e.g., 0.15) increases Recall (catches more fraud) at the expense of Precision (more customer friction and review costs).
+- Raising the threshold (e.g., 0.75) prioritizes Precision (fewer false alerts) at the expense of Recall (higher fraud write-offs).
+
+FraudGuard explicitly scans decision thresholds in steps of 0.05 across calibrated probability models (Logistic Regression, Random Forest, XGBoost, LightGBM, CatBoost) using an asymmetric cost matrix ($C_{FP} = \$10$, $C_{FN} = \$500$) to identify the operational cost-minimizing operating point.
+
+## 6. Cross-Dataset Comparison Boundaries
 - Models trained on Dataset A cannot be directly evaluated on Dataset B without schema alignment, nor can metrics be merged naively.
-- Cross-dataset analysis is conducted at the **methodological level**: comparing how tree-based vs. linear classifiers perform across differing degrees of class imbalance, feature granularity, and data representations.
+- Cross-dataset analysis is conducted at the **methodological level**: comparing how tree-based vs. linear classifiers perform across differing degrees of class imbalance, feature granularity, and data representations once Dataset B is finalized.

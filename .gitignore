@@ -70,3 +70,4 @@ models/*.model
 # Output logs and large artifacts
 outputs/logs/*.log
 !outputs/logs/.gitkeep
+catboost_info/

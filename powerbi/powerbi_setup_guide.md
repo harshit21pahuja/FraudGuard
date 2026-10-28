@@ -92,7 +92,7 @@ Minimum Operational Cost = MIN(threshold_analysis[total_operational_cost])
 
 ### Page 3: Model Performance Comparison
 - **Visual 1 (Clustered Column Bar Chart)**:
-  - X-Axis: `model_name` (Logistic Regression, Decision Tree, Random Forest, GBT, LinearSVC)
+  - X-Axis: `model_name` (Logistic Regression, Random Forest, XGBoost, LightGBM, CatBoost)
   - Y-Axis Values: `precision`, `recall`, `f1_score`, `roc_auc`
   - Title: *"Held-Out Classifier Comparison"*
 - **Visual 2 (Comparison Table / Matrix)**:
