@@ -1,0 +1,6 @@
+card4,total_transactions,fraud_transactions,legitimate_transactions,fraud_rate_pct,dataset_name
+visa,384767,13373,371394,3.48,IEEE-CIS Fraud Detection
+mastercard,189217,6496,182721,3.43,IEEE-CIS Fraud Detection
+american express,8328,239,8089,2.87,IEEE-CIS Fraud Detection
+discover,6651,514,6137,7.73,IEEE-CIS Fraud Detection
+,1577,41,1536,2.6,IEEE-CIS Fraud Detection

@@ -1,0 +1,108 @@
+table dataset_summary
+	lineageTag: a47a1f00-a195-55af-9d9a-ec0250418e89
+
+	measure 'Total Transactions' = SUM(dataset_summary[total_records])
+		formatString: #,##0
+		lineageTag: 9231e9c5-85a2-5a68-8e92-7858137dab82
+
+	measure 'Total Fraud Cases' = SUM(dataset_summary[fraud_records])
+		formatString: #,##0
+		lineageTag: 7ee0e042-36c1-5316-b5b7-7845e3a2651b
+
+	measure 'Total Legitimate Transactions' = SUM(dataset_summary[legitimate_records])
+		formatString: #,##0
+		lineageTag: a2986379-8ff0-5ca0-95d8-07629fc7cb97
+
+	measure 'Fraud Prevalence Pct' = DIVIDE(SUM(dataset_summary[fraud_records]), SUM(dataset_summary[total_records]), 0) * 100
+		formatString: 0.0000
+		lineageTag: e3b30f5b-3aa6-5a28-a516-9f7919ab876e
+
+	column dataset_key
+		dataType: string
+		lineageTag: f5f50ac1-0cf3-5c87-88c1-5a02c98e9374
+		summarizeBy: none
+		sourceColumn: dataset_key
+
+	column dataset_name
+		dataType: string
+		lineageTag: 995d790b-5580-5de1-91c1-28fa930aaab2
+		summarizeBy: none
+		sourceColumn: dataset_name
+
+	column total_records
+		dataType: int64
+		formatString: #,##0
+		lineageTag: 9ca3d7f9-3235-51ce-8bfa-52fc88af2853
+		summarizeBy: sum
+		sourceColumn: total_records
+
+	column legitimate_records
+		dataType: int64
+		formatString: #,##0
+		lineageTag: 9f3c37bd-bf69-5dce-8bb1-7ade233bab1c
+		summarizeBy: sum
+		sourceColumn: legitimate_records
+
+	column fraud_records
+		dataType: int64
+		formatString: #,##0
+		lineageTag: 42bc08dc-f535-5d46-8ced-93eac64d81c4
+		summarizeBy: sum
+		sourceColumn: fraud_records
+
+	column fraud_prevalence_pct
+		dataType: double
+		formatString: 0.0000
+		lineageTag: b55bb5eb-5a58-5641-9634-8da3c7e3b75e
+		summarizeBy: average
+		sourceColumn: fraud_prevalence_pct
+
+	column train_records
+		dataType: int64
+		formatString: #,##0
+		lineageTag: da3db14a-1397-57bc-9810-41f1b02fb692
+		summarizeBy: sum
+		sourceColumn: train_records
+
+	column val_records
+		dataType: int64
+		formatString: #,##0
+		lineageTag: f5c17472-78cc-55ee-a5cc-83fd9df94da1
+		summarizeBy: sum
+		sourceColumn: val_records
+
+	column test_records
+		dataType: int64
+		formatString: #,##0
+		lineageTag: 5a7c0605-d2a7-5182-95fc-2c96fd619e9a
+		summarizeBy: sum
+		sourceColumn: test_records
+
+	column numerical_features
+		dataType: int64
+		lineageTag: 0a5cb2c5-9a78-5561-b064-ea3fa1b846a6
+		summarizeBy: sum
+		sourceColumn: numerical_features
+
+	column categorical_features
+		dataType: int64
+		lineageTag: fdede744-1775-5c0b-b1c7-a9989e830884
+		summarizeBy: sum
+		sourceColumn: categorical_features
+
+	column dropped_high_null_features
+		dataType: int64
+		lineageTag: 3c94045c-3415-5ddd-af0c-375c0dc509c8
+		summarizeBy: sum
+		sourceColumn: dropped_high_null_features
+
+	partition dataset_summary = m
+		mode: import
+		source =
+				let
+					Source = Csv.Document(File.Contents("C:\Users\Harshit Pahuja\Desktop\Big_Data\powerbi\data\dataset_summary.csv"), [Delimiter=",", Encoding=65001, QuoteStyle=QuoteStyle.Csv]),
+					#"Promoted Headers" = Table.PromoteHeaders(Source, [PromoteAllScalars=true]),
+					#"Changed Type" = Table.TransformColumnTypes(#"Promoted Headers", {{"dataset_key", type text}, {"dataset_name", type text}, {"total_records", Int64.Type}, {"legitimate_records", Int64.Type}, {"fraud_records", Int64.Type}, {"fraud_prevalence_pct", type number}, {"train_records", Int64.Type}, {"val_records", Int64.Type}, {"test_records", Int64.Type}, {"numerical_features", Int64.Type}, {"categorical_features", Int64.Type}, {"dropped_high_null_features", Int64.Type}})
+				in
+					#"Changed Type"
+

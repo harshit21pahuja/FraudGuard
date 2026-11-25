@@ -1,0 +1,102 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.14.0/schema.json",
+  "name": "d2c1b1b75b0b50499a16",
+  "position": {
+    "x": 30,
+    "y": 220,
+    "z": 3,
+    "height": 430,
+    "width": 910,
+    "tabOrder": 3
+  },
+  "visual": {
+    "visualType": "clusteredColumnChart",
+    "query": {
+      "queryState": {
+        "Category": {
+          "projections": [
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "model_comparison"
+                    }
+                  },
+                  "Property": "model_name"
+                }
+              },
+              "queryRef": "model_comparison.model_name",
+              "nativeQueryRef": "model_name",
+              "active": true
+            }
+          ]
+        },
+        "Series": {
+          "projections": [
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "model_comparison"
+                    }
+                  },
+                  "Property": "dataset_name"
+                }
+              },
+              "queryRef": "model_comparison.dataset_name",
+              "nativeQueryRef": "dataset_name"
+            }
+          ]
+        },
+        "Y": {
+          "projections": [
+            {
+              "field": {
+                "Aggregation": {
+                  "Expression": {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "model_comparison"
+                        }
+                      },
+                      "Property": "pr_auc"
+                    }
+                  },
+                  "Function": 1
+                }
+              },
+              "queryRef": "Avg(model_comparison.pr_auc)",
+              "nativeQueryRef": "Avg of pr_auc"
+            }
+          ]
+        }
+      }
+    },
+    "visualContainerObjects": {
+      "title": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "text": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Cross-Dataset PR-AUC Comparison by Classifier'"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "drillFilterOtherVisuals": true
+  }
+}

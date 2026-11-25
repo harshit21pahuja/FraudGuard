@@ -1,0 +1,116 @@
+table threshold_analysis
+	lineageTag: 0724dd12-0a75-5ce0-a420-a60a07d31f2b
+
+	measure 'Minimum Operational Loss' = MIN(threshold_analysis[total_operational_cost])
+		formatString: $#,##0
+		lineageTag: 40af2b03-6e32-50a7-bbd9-8054a93a72d2
+
+	measure 'Optimal Threshold' = MAXX(TOPN(1, threshold_analysis, threshold_analysis[total_operational_cost], ASC), threshold_analysis[threshold])
+		formatString: 0.00
+		lineageTag: ee5b1f48-0a3f-5353-b790-cf835ba0c048
+
+	column threshold
+		dataType: double
+		formatString: 0.00
+		lineageTag: 0b4b44df-dc3f-5216-9295-7a66899bf13a
+		summarizeBy: none
+		sourceColumn: threshold
+
+	column precision
+		dataType: double
+		formatString: 0.0000
+		lineageTag: ff8f055f-1973-5a9e-96b3-d957d91075ee
+		summarizeBy: average
+		sourceColumn: precision
+
+	column recall
+		dataType: double
+		formatString: 0.0000
+		lineageTag: 941b6a0a-3eed-5f11-9875-3daaf1842a20
+		summarizeBy: average
+		sourceColumn: recall
+
+	column f1_score
+		dataType: double
+		formatString: 0.0000
+		lineageTag: 306c0c89-ad5d-5acd-94c6-89f10557bef7
+		summarizeBy: average
+		sourceColumn: f1_score
+
+	column true_positives
+		dataType: int64
+		formatString: #,##0
+		lineageTag: 62ebddaf-8e21-5d1b-954a-f92e70a5279e
+		summarizeBy: sum
+		sourceColumn: true_positives
+
+	column false_positives
+		dataType: int64
+		formatString: #,##0
+		lineageTag: fc21459a-8c6c-5995-9ec9-92969eb740ae
+		summarizeBy: sum
+		sourceColumn: false_positives
+
+	column true_negatives
+		dataType: int64
+		formatString: #,##0
+		lineageTag: 17d801c1-07f1-5ade-8b6f-910c8ca08f63
+		summarizeBy: sum
+		sourceColumn: true_negatives
+
+	column false_negatives
+		dataType: int64
+		formatString: #,##0
+		lineageTag: f3c845ca-4f83-57b9-a851-fe087678e952
+		summarizeBy: sum
+		sourceColumn: false_negatives
+
+	column flagged_volume
+		dataType: int64
+		formatString: #,##0
+		lineageTag: 177a68cf-8e6d-559c-9470-aed59db873ba
+		summarizeBy: sum
+		sourceColumn: flagged_volume
+
+	column alert_rate_pct
+		dataType: double
+		formatString: 0.00
+		lineageTag: 450543c7-8439-55b9-a272-4dc2e89da714
+		summarizeBy: average
+		sourceColumn: alert_rate_pct
+
+	column total_operational_cost
+		dataType: double
+		formatString: $#,##0
+		lineageTag: 0dc21d78-b222-5ac2-9842-d05de1dcfb4d
+		summarizeBy: sum
+		sourceColumn: total_operational_cost
+
+	column dataset_key
+		dataType: string
+		lineageTag: f008da61-fdd8-5daf-9cbd-4739de67d7ff
+		summarizeBy: none
+		sourceColumn: dataset_key
+
+	column dataset_name
+		dataType: string
+		lineageTag: a923e8ec-410e-5308-b477-a2b1d585b336
+		summarizeBy: none
+		sourceColumn: dataset_name
+
+	column model_name
+		dataType: string
+		lineageTag: 01c7596c-f6a3-5a39-a400-853616ad8aa6
+		summarizeBy: none
+		sourceColumn: model_name
+
+	partition threshold_analysis = m
+		mode: import
+		source =
+				let
+					Source = Csv.Document(File.Contents("C:\Users\Harshit Pahuja\Desktop\Big_Data\powerbi\data\threshold_analysis.csv"), [Delimiter=",", Encoding=65001, QuoteStyle=QuoteStyle.Csv]),
+					#"Promoted Headers" = Table.PromoteHeaders(Source, [PromoteAllScalars=true]),
+					#"Changed Type" = Table.TransformColumnTypes(#"Promoted Headers", {{"threshold", type number}, {"precision", type number}, {"recall", type number}, {"f1_score", type number}, {"true_positives", Int64.Type}, {"false_positives", Int64.Type}, {"true_negatives", Int64.Type}, {"false_negatives", Int64.Type}, {"flagged_volume", Int64.Type}, {"alert_rate_pct", type number}, {"total_operational_cost", type number}, {"dataset_key", type text}, {"dataset_name", type text}, {"model_name", type text}})
+				in
+					#"Changed Type"
+

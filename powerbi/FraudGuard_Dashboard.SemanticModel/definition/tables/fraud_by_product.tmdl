@@ -1,0 +1,53 @@
+table fraud_by_product
+	lineageTag: 9534f533-72d9-577f-815a-e40d6aca53c6
+
+	column ProductCD
+		dataType: string
+		lineageTag: ce475f34-988c-56fa-b2de-cf28f23c7e7c
+		summarizeBy: none
+		sourceColumn: ProductCD
+
+	column total_transactions
+		dataType: int64
+		formatString: #,##0
+		lineageTag: 8c4433bd-52fc-58da-9bb0-76b3916b43c1
+		summarizeBy: sum
+		sourceColumn: total_transactions
+
+	column fraud_transactions
+		dataType: int64
+		formatString: #,##0
+		lineageTag: 7aae2892-ea61-57c3-9bca-98eef48934b7
+		summarizeBy: sum
+		sourceColumn: fraud_transactions
+
+	column legitimate_transactions
+		dataType: int64
+		formatString: #,##0
+		lineageTag: 8a1df3ec-43bf-57c6-a714-b0c53d234c75
+		summarizeBy: sum
+		sourceColumn: legitimate_transactions
+
+	column fraud_rate_pct
+		dataType: double
+		formatString: 0.00
+		lineageTag: e09ec487-ff2c-58a9-9934-d13f1b6e4fc8
+		summarizeBy: average
+		sourceColumn: fraud_rate_pct
+
+	column dataset_name
+		dataType: string
+		lineageTag: 92e46915-bbe2-5125-82a5-3a6a0c00e614
+		summarizeBy: none
+		sourceColumn: dataset_name
+
+	partition fraud_by_product = m
+		mode: import
+		source =
+				let
+					Source = Csv.Document(File.Contents("C:\Users\Harshit Pahuja\Desktop\Big_Data\powerbi\data\fraud_by_product.csv"), [Delimiter=",", Encoding=65001, QuoteStyle=QuoteStyle.Csv]),
+					#"Promoted Headers" = Table.PromoteHeaders(Source, [PromoteAllScalars=true]),
+					#"Changed Type" = Table.TransformColumnTypes(#"Promoted Headers", {{"ProductCD", type text}, {"total_transactions", Int64.Type}, {"fraud_transactions", Int64.Type}, {"legitimate_transactions", Int64.Type}, {"fraud_rate_pct", type number}, {"dataset_name", type text}})
+				in
+					#"Changed Type"
+

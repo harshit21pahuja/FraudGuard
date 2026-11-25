@@ -1,0 +1,137 @@
+table model_comparison
+	lineageTag: 7af7fc0a-c4ae-5063-8046-3078bab5bcc4
+
+	measure 'Best F1 Score' = MAX(model_comparison[f1_score])
+		formatString: 0.0000
+		lineageTag: 34bb2ddb-b18c-5690-9ab1-98718996bdcb
+
+	measure 'Best PR-AUC' = MAX(model_comparison[pr_auc])
+		formatString: 0.0000
+		lineageTag: f2b9df13-cf31-5727-8655-2f91164bc34a
+
+	measure 'Lowest Log Loss' = MIN(model_comparison[log_loss])
+		formatString: 0.00000
+		lineageTag: ea07d33b-ca41-555e-b32e-f68dee2c2384
+
+	measure 'Top Performing Model' = CONCATENATEX(TOPN(1, model_comparison, model_comparison[pr_auc], DESC), model_comparison[model_name], ", ")
+		lineageTag: a67bec47-da48-5d60-92fa-99b327753591
+
+	column model_name
+		dataType: string
+		lineageTag: d016fbb1-b1ba-5946-a9aa-4de34ff23bdd
+		summarizeBy: none
+		sourceColumn: model_name
+
+	column total_test_samples
+		dataType: int64
+		formatString: #,##0
+		lineageTag: 47b01770-b04b-5bdd-a9b5-2b247a528209
+		summarizeBy: sum
+		sourceColumn: total_test_samples
+
+	column true_positives
+		dataType: int64
+		formatString: #,##0
+		lineageTag: c7319003-ff7f-598a-b608-e546f5369493
+		summarizeBy: sum
+		sourceColumn: true_positives
+
+	column true_negatives
+		dataType: int64
+		formatString: #,##0
+		lineageTag: f67f2568-f1a2-5a41-aab9-b4aaacaa35ab
+		summarizeBy: sum
+		sourceColumn: true_negatives
+
+	column false_positives
+		dataType: int64
+		formatString: #,##0
+		lineageTag: 9a437fdb-b343-585d-9443-3cf91b1dad2a
+		summarizeBy: sum
+		sourceColumn: false_positives
+
+	column false_negatives
+		dataType: int64
+		formatString: #,##0
+		lineageTag: c4702c3a-9bb7-5f40-991f-b01a18756f67
+		summarizeBy: sum
+		sourceColumn: false_negatives
+
+	column precision
+		dataType: double
+		formatString: 0.0000
+		lineageTag: e2cfc8df-0f62-5ea4-bef1-401c016bfdc7
+		summarizeBy: average
+		sourceColumn: precision
+
+	column recall
+		dataType: double
+		formatString: 0.0000
+		lineageTag: 1a53a582-7c31-5233-9960-3628ed818efd
+		summarizeBy: average
+		sourceColumn: recall
+
+	column f1_score
+		dataType: double
+		formatString: 0.0000
+		lineageTag: 6008a276-31b1-544d-9eb0-1f381f196365
+		summarizeBy: average
+		sourceColumn: f1_score
+
+	column roc_auc
+		dataType: double
+		formatString: 0.0000
+		lineageTag: 7545325c-eb67-5c25-a003-9330e155be96
+		summarizeBy: average
+		sourceColumn: roc_auc
+
+	column pr_auc
+		dataType: double
+		formatString: 0.0000
+		lineageTag: 92e89348-643a-5d92-a7eb-99cff655c4e8
+		summarizeBy: average
+		sourceColumn: pr_auc
+
+	column log_loss
+		dataType: double
+		formatString: 0.00000
+		lineageTag: f3616cfb-a18c-5f57-9136-b70aee8c8298
+		summarizeBy: average
+		sourceColumn: log_loss
+
+	column accuracy
+		dataType: double
+		formatString: 0.0000
+		lineageTag: 4d68b76a-ece7-5850-97a9-4f8c4de0d88f
+		summarizeBy: average
+		sourceColumn: accuracy
+
+	column training_time_sec
+		dataType: double
+		formatString: 0.00
+		lineageTag: a7d0f9cf-77ff-5d74-a776-50738572cd11
+		summarizeBy: sum
+		sourceColumn: training_time_sec
+
+	column dataset_key
+		dataType: string
+		lineageTag: 27db2d3c-e323-5d54-93ed-8021146c9faa
+		summarizeBy: none
+		sourceColumn: dataset_key
+
+	column dataset_name
+		dataType: string
+		lineageTag: f8158dc6-0d97-5693-a0e0-a7a8eae1d053
+		summarizeBy: none
+		sourceColumn: dataset_name
+
+	partition model_comparison = m
+		mode: import
+		source =
+				let
+					Source = Csv.Document(File.Contents("C:\Users\Harshit Pahuja\Desktop\Big_Data\powerbi\data\model_comparison.csv"), [Delimiter=",", Encoding=65001, QuoteStyle=QuoteStyle.Csv]),
+					#"Promoted Headers" = Table.PromoteHeaders(Source, [PromoteAllScalars=true]),
+					#"Changed Type" = Table.TransformColumnTypes(#"Promoted Headers", {{"model_name", type text}, {"total_test_samples", Int64.Type}, {"true_positives", Int64.Type}, {"true_negatives", Int64.Type}, {"false_positives", Int64.Type}, {"false_negatives", Int64.Type}, {"precision", type number}, {"recall", type number}, {"f1_score", type number}, {"roc_auc", type number}, {"pr_auc", type number}, {"log_loss", type number}, {"accuracy", type number}, {"training_time_sec", type number}, {"dataset_key", type text}, {"dataset_name", type text}})
+				in
+					#"Changed Type"
+

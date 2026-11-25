@@ -1,0 +1,25 @@
+hour_of_day,total_transactions,fraud_transactions,fraud_rate_pct,dataset_name
+0,37795,1186,3.138,IEEE-CIS Fraud Detection
+1,32797,1027,3.1314,IEEE-CIS Fraud Detection
+2,26732,1002,3.7483,IEEE-CIS Fraud Detection
+3,20802,797,3.8314,IEEE-CIS Fraud Detection
+4,14839,770,5.189,IEEE-CIS Fraud Detection
+5,9701,682,7.0302,IEEE-CIS Fraud Detection
+6,6007,467,7.7743,IEEE-CIS Fraud Detection
+7,3704,393,10.6102,IEEE-CIS Fraud Detection
+8,2591,241,9.3014,IEEE-CIS Fraud Detection
+9,2479,223,8.9956,IEEE-CIS Fraud Detection
+10,3627,193,5.3212,IEEE-CIS Fraud Detection
+11,6827,265,3.8816,IEEE-CIS Fraud Detection
+12,12451,379,3.0439,IEEE-CIS Fraud Detection
+13,20315,465,2.2889,IEEE-CIS Fraud Detection
+14,28328,686,2.4216,IEEE-CIS Fraud Detection
+15,33859,860,2.5399,IEEE-CIS Fraud Detection
+16,38698,1142,2.9511,IEEE-CIS Fraud Detection
+17,40723,1284,3.153,IEEE-CIS Fraud Detection
+18,41639,1467,3.5231,IEEE-CIS Fraud Detection
+19,42115,1463,3.4738,IEEE-CIS Fraud Detection
+20,41782,1432,3.4273,IEEE-CIS Fraud Detection
+21,41641,1416,3.4005,IEEE-CIS Fraud Detection
+22,41139,1345,3.2694,IEEE-CIS Fraud Detection
+23,39949,1478,3.6997,IEEE-CIS Fraud Detection

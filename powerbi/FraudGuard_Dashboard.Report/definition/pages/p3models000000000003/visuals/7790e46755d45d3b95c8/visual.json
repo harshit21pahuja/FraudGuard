@@ -1,0 +1,60 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.13.0/schema.json",
+  "name": "7790e46755d45d3b95c8",
+  "position": {
+    "x": 1540,
+    "y": 20,
+    "z": 4,
+    "height": 170,
+    "width": 350,
+    "tabOrder": 4
+  },
+  "visual": {
+    "visualType": "cardVisual",
+    "query": {
+      "queryState": {
+        "Data": {
+          "projections": [
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "model_comparison"
+                    }
+                  },
+                  "Property": "Lowest Log Loss"
+                }
+              },
+              "queryRef": "model_comparison.Lowest Log Loss",
+              "nativeQueryRef": "Lowest Log Loss"
+            }
+          ]
+        }
+      }
+    },
+    "drillFilterOtherVisuals": true,
+    "visualContainerObjects": {
+      "title": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "text": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Lowest Log Loss'"
+                }
+              }
+            }
+          }
+        }
+      ]
+    }
+  }
+}

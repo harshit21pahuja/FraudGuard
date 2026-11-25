@@ -115,3 +115,28 @@ def generate_mock_ieee_cis_data(
     )
 
     return spark.createDataFrame(rows, schema=schema)
+
+
+def generate_mock_creditcard_data(
+    spark: Any, num_records: int = 200, fraud_rate: float = 0.05, seed: int = 42
+) -> DataFrame:
+    """Generate a realistic mock Spark DataFrame mirroring ULB Credit Card Fraud schema."""
+    random.seed(seed)
+    feature_cols = ["Time"] + [f"V{idx}" for idx in range(1, 29)] + ["Amount"]
+    rows = []
+    for i in range(num_records):
+        is_fraud = 1 if (i % max(1, int(1.0 / fraud_rate)) == 0) else 0
+        t_val = float(i * 600 + random.randint(0, 300))
+        if is_fraud == 1:
+            v_vals = [round(random.gauss(-2.0 if k in (1, 3, 4, 10, 14) else 0.5, 1.2), 4) for k in range(1, 29)]
+            amt = round(random.uniform(120.0, 900.0), 2)
+        else:
+            v_vals = [round(random.gauss(0.2 if k in (1, 3, 14) else 0.0, 0.8), 4) for k in range(1, 29)]
+            amt = round(random.expovariate(1 / 60.0) + 1.0, 2)
+        rows.append((t_val, *v_vals, amt, is_fraud))
+
+    schema = StructType(
+        [StructField(c, DoubleType(), False) for c in feature_cols]
+        + [StructField("Class", IntegerType(), False)]
+    )
+    return spark.createDataFrame(rows, schema=schema)

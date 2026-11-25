@@ -1,0 +1,6 @@
+model_name,total_test_samples,true_positives,true_negatives,false_positives,false_negatives,precision,recall,f1_score,roc_auc,pr_auc,log_loss,accuracy,training_time_sec,dataset_key,dataset_name
+logistic_regression,42722,41,42642,6,33,0.8723,0.5541,0.6777,0.9668,0.6781,0.00441,0.9991,4.07,dataset_b,ULB European Cardholders Credit Card Fraud
+random_forest,42722,55,42643,5,19,0.9167,0.7432,0.8209,0.9483,0.8087,0.00341,0.9994,5.36,dataset_b,ULB European Cardholders Credit Card Fraud
+xgboost,42722,55,42645,3,19,0.9483,0.7432,0.8333,0.9734,0.7757,0.00317,0.9995,0.95,dataset_b,ULB European Cardholders Credit Card Fraud
+lightgbm,42722,55,42645,3,19,0.9483,0.7432,0.8333,0.9738,0.7545,0.00335,0.9995,0.66,dataset_b,ULB European Cardholders Credit Card Fraud
+catboost,42722,57,42646,2,17,0.9661,0.7703,0.8572,0.9784,0.7759,0.00304,0.9996,1.86,dataset_b,ULB European Cardholders Credit Card Fraud

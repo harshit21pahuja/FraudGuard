@@ -1,0 +1,160 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.14.0/schema.json",
+  "name": "9506aeb88f125a75b51d",
+  "position": {
+    "x": 30,
+    "y": 220,
+    "z": 5,
+    "height": 430,
+    "width": 1140,
+    "tabOrder": 5
+  },
+  "visual": {
+    "visualType": "clusteredColumnChart",
+    "query": {
+      "queryState": {
+        "Category": {
+          "projections": [
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "model_comparison"
+                    }
+                  },
+                  "Property": "model_name"
+                }
+              },
+              "queryRef": "model_comparison.model_name",
+              "nativeQueryRef": "model_name",
+              "active": true
+            }
+          ]
+        },
+        "Y": {
+          "projections": [
+            {
+              "field": {
+                "Aggregation": {
+                  "Expression": {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "model_comparison"
+                        }
+                      },
+                      "Property": "precision"
+                    }
+                  },
+                  "Function": 1
+                }
+              },
+              "queryRef": "Avg(model_comparison.precision)",
+              "nativeQueryRef": "Avg of precision"
+            },
+            {
+              "field": {
+                "Aggregation": {
+                  "Expression": {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "model_comparison"
+                        }
+                      },
+                      "Property": "recall"
+                    }
+                  },
+                  "Function": 1
+                }
+              },
+              "queryRef": "Avg(model_comparison.recall)",
+              "nativeQueryRef": "Avg of recall"
+            },
+            {
+              "field": {
+                "Aggregation": {
+                  "Expression": {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "model_comparison"
+                        }
+                      },
+                      "Property": "f1_score"
+                    }
+                  },
+                  "Function": 1
+                }
+              },
+              "queryRef": "Avg(model_comparison.f1_score)",
+              "nativeQueryRef": "Avg of f1_score"
+            },
+            {
+              "field": {
+                "Aggregation": {
+                  "Expression": {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "model_comparison"
+                        }
+                      },
+                      "Property": "roc_auc"
+                    }
+                  },
+                  "Function": 1
+                }
+              },
+              "queryRef": "Avg(model_comparison.roc_auc)",
+              "nativeQueryRef": "Avg of roc_auc"
+            },
+            {
+              "field": {
+                "Aggregation": {
+                  "Expression": {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "model_comparison"
+                        }
+                      },
+                      "Property": "pr_auc"
+                    }
+                  },
+                  "Function": 1
+                }
+              },
+              "queryRef": "Avg(model_comparison.pr_auc)",
+              "nativeQueryRef": "Avg of pr_auc"
+            }
+          ]
+        }
+      }
+    },
+    "visualContainerObjects": {
+      "title": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "text": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Classifier Comparison Across Core Discrimination Metrics'"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "drillFilterOtherVisuals": true
+  }
+}

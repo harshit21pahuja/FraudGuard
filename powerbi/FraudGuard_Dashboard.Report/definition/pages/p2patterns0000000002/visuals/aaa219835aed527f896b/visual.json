@@ -1,0 +1,103 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.14.0/schema.json",
+  "name": "aaa219835aed527f896b",
+  "position": {
+    "x": 30,
+    "y": 280,
+    "z": 2,
+    "height": 370,
+    "width": 600,
+    "tabOrder": 2
+  },
+  "visual": {
+    "visualType": "clusteredColumnChart",
+    "query": {
+      "queryState": {
+        "Category": {
+          "projections": [
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "amount_distribution"
+                    }
+                  },
+                  "Property": "class_label"
+                }
+              },
+              "queryRef": "amount_distribution.class_label",
+              "nativeQueryRef": "class_label",
+              "active": true
+            }
+          ]
+        },
+        "Y": {
+          "projections": [
+            {
+              "field": {
+                "Aggregation": {
+                  "Expression": {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "amount_distribution"
+                        }
+                      },
+                      "Property": "avg_amount"
+                    }
+                  },
+                  "Function": 1
+                }
+              },
+              "queryRef": "Avg(amount_distribution.avg_amount)",
+              "nativeQueryRef": "Avg of avg_amount"
+            },
+            {
+              "field": {
+                "Aggregation": {
+                  "Expression": {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "amount_distribution"
+                        }
+                      },
+                      "Property": "stddev_amount"
+                    }
+                  },
+                  "Function": 1
+                }
+              },
+              "queryRef": "Avg(amount_distribution.stddev_amount)",
+              "nativeQueryRef": "Avg of stddev_amount"
+            }
+          ]
+        }
+      }
+    },
+    "visualContainerObjects": {
+      "title": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "text": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Mean & StdDev Amount ($) by Class'"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "drillFilterOtherVisuals": true
+  }
+}

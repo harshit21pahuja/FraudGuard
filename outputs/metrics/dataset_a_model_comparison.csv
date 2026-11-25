@@ -1,0 +1,6 @@
+model_name,total_test_samples,true_positives,true_negatives,false_positives,false_negatives,precision,recall,f1_score,roc_auc,pr_auc,log_loss,accuracy,training_time_sec,dataset_key,dataset_name
+logistic_regression,89092,722,84562,1425,2383,0.3363,0.2325,0.2749,0.8243,0.1826,0.50123,0.9573,24.33,dataset_a,IEEE-CIS Fraud Detection
+random_forest,89092,704,85882,105,2401,0.8702,0.2267,0.3597,0.8468,0.403,0.11102,0.9719,21.82,dataset_a,IEEE-CIS Fraud Detection
+xgboost,89092,995,85673,314,2110,0.7601,0.3205,0.4509,0.8933,0.4704,0.09912,0.9728,11.94,dataset_a,IEEE-CIS Fraud Detection
+lightgbm,89092,986,85646,341,2119,0.743,0.3176,0.445,0.8885,0.4718,0.09927,0.9724,3.96,dataset_a,IEEE-CIS Fraud Detection
+catboost,89092,917,85772,215,2188,0.8101,0.2953,0.4328,0.8744,0.4705,0.10041,0.973,7.77,dataset_a,IEEE-CIS Fraud Detection

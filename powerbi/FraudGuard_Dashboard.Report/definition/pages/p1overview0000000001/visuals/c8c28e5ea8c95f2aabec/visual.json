@@ -1,0 +1,60 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.13.0/schema.json",
+  "name": "c8c28e5ea8c95f2aabec",
+  "position": {
+    "x": 820,
+    "y": 20,
+    "z": 2,
+    "height": 180,
+    "width": 340,
+    "tabOrder": 2
+  },
+  "visual": {
+    "visualType": "cardVisual",
+    "query": {
+      "queryState": {
+        "Data": {
+          "projections": [
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "dataset_summary"
+                    }
+                  },
+                  "Property": "Total Legitimate Transactions"
+                }
+              },
+              "queryRef": "dataset_summary.Total Legitimate Transactions",
+              "nativeQueryRef": "Total Legitimate Transactions"
+            }
+          ]
+        }
+      }
+    },
+    "drillFilterOtherVisuals": true,
+    "visualContainerObjects": {
+      "title": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "text": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Legitimate Transactions'"
+                }
+              }
+            }
+          }
+        }
+      ]
+    }
+  }
+}

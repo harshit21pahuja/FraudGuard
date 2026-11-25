@@ -9,7 +9,7 @@ Final Model Selection:
 """
 
 import time
-from typing import Any, Dict, Tuple
+from typing import Any, Dict, List, Tuple
 import logging
 import numpy as np
 
@@ -21,8 +21,9 @@ try:
         LogisticRegression,
         RandomForestClassifier,
     )
-    from pyspark.ml.linalg import Vectors
+    from pyspark.ml.linalg import Vectors, VectorUDT
     from pyspark.sql import DataFrame, Row
+    from pyspark.sql.types import DoubleType, IntegerType, StructField, StructType
     PYSPARK_AVAILABLE = True
 except ImportError:
     PYSPARK_AVAILABLE = False
@@ -50,7 +51,7 @@ except ImportError:
 class BoostedSparkModelWrapper:
     """Wrapper for scikit-learn compatible gradient boosted models (XGBoost, LightGBM, CatBoost)
     to seamlessly interact with Spark ML evaluation and threshold risk pipelines.
-    
+
     Produces identical output schema as native Spark ML classifiers:
       - 'rawPrediction': Vector [margin_0, margin_1]
       - 'probability': Vector [P(0), P(1)]
@@ -62,30 +63,48 @@ class BoostedSparkModelWrapper:
         self.model_name = model_name
 
     def transform(self, df: DataFrame) -> DataFrame:
-        """Run inference on the Spark DataFrame features and return enriched DataFrame."""
-        rows = df.collect()
+        """Run inference on Spark DataFrame features and return explicit-schema DataFrame."""
+        rows = df.select("label", "features").collect()
         if not rows:
             return df
 
-        X = np.array([r["features"].toArray() for r in rows], dtype=np.float32)
+        n_rows = len(rows)
+        dim = len(rows[0]["features"])
+        X = np.empty((n_rows, dim), dtype=np.float32)
+        labels = np.empty((n_rows,), dtype=np.int32)
+        for i, r in enumerate(rows):
+            X[i] = r["features"].toArray()
+            labels[i] = int(r["label"])
+        del rows
+
         probs = self.model.predict_proba(X)
         preds = self.model.predict(X).astype(float)
+        del X
 
         enriched_rows = []
-        for i, r in enumerate(rows):
-            d = r.asDict()
+        for i in range(n_rows):
             p0 = float(probs[i][0])
             p1 = float(probs[i][1])
-            # Calibrated log-odds for rawPrediction
             p1_clamped = max(min(p1, 1.0 - 1e-7), 1e-7)
             raw = float(np.log(p1_clamped / (1.0 - p1_clamped)))
-            d["rawPrediction"] = Vectors.dense([-raw, raw])
-            d["probability"] = Vectors.dense([p0, p1])
-            d["prediction"] = float(preds[i])
-            enriched_rows.append(Row(**d))
+            enriched_rows.append(
+                (
+                    int(labels[i]),
+                    Vectors.dense([-raw, raw]),
+                    Vectors.dense([p0, p1]),
+                    float(preds[i]),
+                )
+            )
 
-        spark = df.sparkSession
-        return spark.createDataFrame(enriched_rows)
+        schema = StructType(
+            [
+                StructField("label", IntegerType(), False),
+                StructField("rawPrediction", VectorUDT(), False),
+                StructField("probability", VectorUDT(), False),
+                StructField("prediction", DoubleType(), False),
+            ]
+        )
+        return df.sparkSession.createDataFrame(enriched_rows, schema=schema)
 
 
 def get_classifier(model_name: str, model_config: Dict[str, Any] | None = None) -> Any:
@@ -146,6 +165,8 @@ def get_classifier(model_name: str, model_config: Dict[str, Any] | None = None) 
             max_depth=cfg.get("max_depth", 6),
             learning_rate=cfg.get("learning_rate", 0.1),
             num_leaves=cfg.get("num_leaves", 31),
+            min_child_samples=cfg.get("min_child_samples", 20),
+            reg_lambda=cfg.get("reg_lambda", 0.0),
             random_state=cfg.get("seed", 42),
             verbose=cfg.get("verbose", -1),
             n_jobs=cfg.get("n_jobs", -1),
@@ -170,10 +191,26 @@ def get_classifier(model_name: str, model_config: Dict[str, Any] | None = None) 
         )
 
 
+def extract_numpy_features(df: DataFrame) -> Tuple[np.ndarray, np.ndarray]:
+    """Collect Spark ML feature vectors and labels into pre-allocated NumPy arrays."""
+    rows = df.select("features", "label").collect()
+    if not rows:
+        return np.empty((0, 0), dtype=np.float32), np.empty((0,), dtype=np.int32)
+    dim = len(rows[0]["features"])
+    X = np.empty((len(rows), dim), dtype=np.float32)
+    y = np.empty((len(rows),), dtype=np.int32)
+    for idx, r in enumerate(rows):
+        X[idx] = r["features"].toArray()
+        y[idx] = int(r["label"])
+    del rows
+    return X, y
+
+
 def train_model(
     model_name: str,
     train_df: DataFrame,
     model_config: Dict[str, Any] | None = None,
+    precomputed_xy: Tuple[np.ndarray, np.ndarray] | None = None,
 ) -> Tuple[Any, float]:
     """Train a classifier on the training split and record genuine training runtime.
 
@@ -181,24 +218,122 @@ def train_model(
         Tuple of (fitted_model, training_time_seconds)
     """
     classifier = get_classifier(model_name, model_config)
-    record_count = train_df.count()
+    record_count = len(precomputed_xy[1]) if precomputed_xy is not None else train_df.count()
     logger.info(f"Initiating training for model: '{model_name}' on {record_count} records...")
 
     start_time = time.time()
     name = model_name.lower().replace(" ", "_").replace("-", "_")
 
     if name in ("logistic_regression", "lr", "random_forest", "rf"):
-        # Native Spark ML classifier
         fitted_model = classifier.fit(train_df)
     else:
-        # Boosted model (XGBoost, LightGBM, CatBoost)
-        rows = train_df.select("features", "label").collect()
-        X = np.array([r["features"].toArray() for r in rows], dtype=np.float32)
-        y = np.array([r["label"] for r in rows], dtype=np.float32)
-
+        X, y = precomputed_xy if precomputed_xy is not None else extract_numpy_features(train_df)
         classifier.fit(X, y)
         fitted_model = BoostedSparkModelWrapper(classifier, model_name=model_name)
 
     training_time = round(time.time() - start_time, 2)
     logger.info(f"Model '{model_name}' trained successfully in {training_time} seconds.")
     return fitted_model, training_time
+
+
+def tune_classifier_on_validation(
+    model_name: str,
+    train_df: DataFrame,
+    val_df: DataFrame,
+    base_config: Dict[str, Any] | None = None,
+    precomputed_train_xy: Tuple[np.ndarray, np.ndarray] | None = None,
+    precomputed_val_xy: Tuple[np.ndarray, np.ndarray] | None = None,
+) -> Tuple[Any, float, Dict[str, Any], List[Dict[str, Any]]]:
+    """Evaluate candidate hyperparameter settings on the validation split and pick best by PR-AUC."""
+    from src.evaluation.metrics import evaluate_predictions
+
+    base_cfg = dict(base_config or {})
+    name = model_name.lower().replace(" ", "_").replace("-", "_")
+
+    if name in ("logistic_regression", "lr"):
+        candidates = [
+            {**base_cfg, "reg_param": 0.001},
+            {**base_cfg, "reg_param": 0.01},
+            {**base_cfg, "reg_param": 0.1},
+        ]
+    elif name in ("random_forest", "rf"):
+        candidates = [
+            {**base_cfg, "max_depth": 5},
+            {**base_cfg, "max_depth": 8},
+        ]
+    elif name in ("xgboost", "xgb"):
+        candidates = [
+            {**base_cfg, "max_depth": 4, "learning_rate": 0.1},
+            {**base_cfg, "max_depth": 6, "learning_rate": 0.1},
+            {**base_cfg, "max_depth": 6, "learning_rate": 0.05},
+        ]
+    elif name in ("lightgbm", "lgb"):
+        candidates = [
+            {**base_cfg, "max_depth": 5, "num_leaves": 15, "learning_rate": 0.03, "min_child_samples": 50, "reg_lambda": 5.0},
+            {**base_cfg, "max_depth": 6, "num_leaves": 31, "learning_rate": 0.05, "min_child_samples": 30, "reg_lambda": 1.0},
+            {**base_cfg, "max_depth": 6, "num_leaves": 31, "learning_rate": 0.1, "min_child_samples": 20, "reg_lambda": 0.0},
+        ]
+    else:  # catboost
+        candidates = [
+            {**base_cfg, "depth": 4, "learning_rate": 0.1},
+            {**base_cfg, "depth": 6, "learning_rate": 0.1},
+            {**base_cfg, "depth": 6, "learning_rate": 0.05},
+        ]
+
+    best_model = None
+    best_time = 0.0
+    best_cfg = base_cfg
+    best_score = -1.0
+    tuning_records: List[Dict[str, Any]] = []
+
+    for cand_cfg in candidates:
+        if name in ("logistic_regression", "lr", "random_forest", "rf"):
+            fitted, train_sec = train_model(model_name, train_df, cand_cfg)
+            val_preds = fitted.transform(val_df)
+            val_metrics = evaluate_predictions(val_preds, model_name=model_name)
+        else:
+            # Fast vectorized validation evaluation for boosted candidates
+            from sklearn.metrics import average_precision_score, roc_auc_score
+            from src.evaluation.metrics import compute_binary_log_loss
+
+            X_tr, y_tr = precomputed_train_xy or extract_numpy_features(train_df)
+            X_va, y_va = precomputed_val_xy or extract_numpy_features(val_df)
+            clf = get_classifier(model_name, cand_cfg)
+            t0 = time.time()
+            clf.fit(X_tr, y_tr)
+            train_sec = round(time.time() - t0, 2)
+            probs = clf.predict_proba(X_va)[:, 1]
+            val_metrics = {
+                "pr_auc": round(float(average_precision_score(y_va, probs)), 4) if len(np.unique(y_va)) > 1 else 0.0,
+                "roc_auc": round(float(roc_auc_score(y_va, probs)), 4) if len(np.unique(y_va)) > 1 else 0.0,
+                "log_loss": compute_binary_log_loss(y_va, probs),
+            }
+            fitted = BoostedSparkModelWrapper(clf, model_name=model_name)
+
+        param_summary = {
+            k: v
+            for k, v in cand_cfg.items()
+            if k in ("reg_param", "max_depth", "depth", "num_leaves", "learning_rate", "min_child_samples", "reg_lambda", "num_trees", "n_estimators", "iterations")
+        }
+        rec = {
+            "model_name": model_name,
+            "hyperparameters": str(param_summary),
+            "val_pr_auc": val_metrics["pr_auc"],
+            "val_roc_auc": val_metrics["roc_auc"],
+            "val_log_loss": val_metrics["log_loss"],
+            "train_time_sec": train_sec,
+            "selected": False,
+        }
+        tuning_records.append(rec)
+        if val_metrics["pr_auc"] > best_score:
+            best_score = val_metrics["pr_auc"]
+            best_model = fitted
+            best_time = train_sec
+            best_cfg = cand_cfg
+
+    for rec in tuning_records:
+        if rec["val_pr_auc"] == best_score and best_score >= 0:
+            rec["selected"] = True
+            break
+
+    return best_model, best_time, best_cfg, tuning_records

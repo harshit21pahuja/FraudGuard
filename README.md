@@ -87,8 +87,8 @@ FraudGuard/
 
 ## 6. Development Workflow & Implementation Phases
 - **Phase 1: Workspace Audit & Planning** *(Completed)*
-- **Phase 2: Environment & Dataset Validation** *(In Progress)*
-- **Phase 3: Data Ingestion & Preprocessing Pipeline**
-- **Phase 4: Spark ML Model Training & Threshold Risk Analysis**
-- **Phase 5: Power BI Export & Dashboard Generation**
-- **Phase 6: Testing, Academic Report & Viva Defense Preparation**
+- **Phase 2: Environment & Dataset Validation** *(Completed)*
+- **Phase 3: Data Ingestion & Preprocessing Pipeline** *(Completed)*
+- **Phase 4: Spark ML Model Training & Threshold Risk Analysis** *(Completed)*
+- **Phase 5: Power BI Export & Dashboard Generation** *(Completed)*
+- **Phase 6: Testing, Academic Report & Viva Defense Preparation** *(In Progress)*

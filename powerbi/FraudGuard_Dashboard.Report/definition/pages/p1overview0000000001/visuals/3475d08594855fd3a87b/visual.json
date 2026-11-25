@@ -1,0 +1,158 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.13.0/schema.json",
+  "name": "3475d08594855fd3a87b",
+  "position": {
+    "x": 30,
+    "y": 690,
+    "z": 7,
+    "height": 360,
+    "width": 1860,
+    "tabOrder": 7
+  },
+  "visual": {
+    "visualType": "tableEx",
+    "query": {
+      "queryState": {
+        "Values": {
+          "projections": [
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "dataset_summary"
+                    }
+                  },
+                  "Property": "dataset_name"
+                }
+              },
+              "queryRef": "dataset_summary.dataset_name",
+              "nativeQueryRef": "dataset_name"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "dataset_summary"
+                    }
+                  },
+                  "Property": "total_records"
+                }
+              },
+              "queryRef": "dataset_summary.total_records",
+              "nativeQueryRef": "total_records"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "dataset_summary"
+                    }
+                  },
+                  "Property": "legitimate_records"
+                }
+              },
+              "queryRef": "dataset_summary.legitimate_records",
+              "nativeQueryRef": "legitimate_records"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "dataset_summary"
+                    }
+                  },
+                  "Property": "fraud_records"
+                }
+              },
+              "queryRef": "dataset_summary.fraud_records",
+              "nativeQueryRef": "fraud_records"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "dataset_summary"
+                    }
+                  },
+                  "Property": "fraud_prevalence_pct"
+                }
+              },
+              "queryRef": "dataset_summary.fraud_prevalence_pct",
+              "nativeQueryRef": "fraud_prevalence_pct"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "dataset_summary"
+                    }
+                  },
+                  "Property": "numerical_features"
+                }
+              },
+              "queryRef": "dataset_summary.numerical_features",
+              "nativeQueryRef": "numerical_features"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "dataset_summary"
+                    }
+                  },
+                  "Property": "categorical_features"
+                }
+              },
+              "queryRef": "dataset_summary.categorical_features",
+              "nativeQueryRef": "categorical_features"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "dataset_summary"
+                    }
+                  },
+                  "Property": "dropped_high_null_features"
+                }
+              },
+              "queryRef": "dataset_summary.dropped_high_null_features",
+              "nativeQueryRef": "dropped_high_null_features"
+            }
+          ]
+        }
+      }
+    },
+    "drillFilterOtherVisuals": true,
+    "visualContainerObjects": {
+      "title": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "text": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Dataset Ingestion & Feature Schema Summary'"
+                }
+              }
+            }
+          }
+        }
+      ]
+    }
+  }
+}

@@ -89,6 +89,7 @@ class TestSparkMLPipelineSmoke(unittest.TestCase):
         self.assertIn("precision", metrics)
         self.assertIn("recall", metrics)
         self.assertIn("f1_score", metrics)
+        self.assertIn("log_loss", metrics)
         self.assertIn("true_positives", metrics)
 
         # 7. Threshold risk analysis
@@ -98,6 +99,30 @@ class TestSparkMLPipelineSmoke(unittest.TestCase):
         self.assertTrue(len(threshold_records) > 0)
         self.assertIn("threshold", threshold_records[0])
         self.assertIn("total_operational_cost", threshold_records[0])
+
+    def test_creditcard_stratified_pipeline(self):
+        from src.data.mock_generator import generate_mock_creditcard_data
+        from src.data.loader import stratified_split
+        from src.features.engineering import identify_column_types, build_spark_ml_feature_pipeline
+        from src.models.trainer import train_model
+        from src.evaluation.metrics import evaluate_predictions
+
+        df = generate_mock_creditcard_data(self.spark, num_records=100, fraud_rate=0.10, seed=42)
+        train_df, val_df, test_df = stratified_split(df, target_col="Class", seed=42)
+        self.assertEqual(train_df.count() + val_df.count() + test_df.count(), 100)
+        self.assertGreater(test_df.filter("Class = 1").count(), 0)
+
+        num_cols, cat_cols, _ = identify_column_types(train_df, target_col="Class", id_col=None, time_col="Time")
+        self.assertEqual(len(cat_cols), 0)
+        self.assertEqual(len(num_cols), 29)
+
+        pipe = build_spark_ml_feature_pipeline(num_cols, cat_cols, apply_scaling=True).fit(train_df)
+        train_prep = pipe.transform(train_df).withColumnRenamed("Class", "label")
+        test_prep = pipe.transform(test_df).withColumnRenamed("Class", "label")
+        xgb_model, _ = train_model("xgboost", train_prep, {"n_estimators": 5, "max_depth": 3})
+        metrics = evaluate_predictions(xgb_model.transform(test_prep), model_name="xgboost")
+        self.assertGreaterEqual(metrics["roc_auc"], 0.0)
+        self.assertGreaterEqual(metrics["log_loss"], 0.0)
 
 
 if __name__ == "__main__":

@@ -1,0 +1,15 @@
+model_name,hyperparameters,val_pr_auc,val_roc_auc,val_log_loss,train_time_sec,selected,dataset_key,dataset_name
+logistic_regression,{'reg_param': 0.001},0.6159,0.959,0.00584,8.4,True,dataset_b,ULB European Cardholders Credit Card Fraud
+logistic_regression,{'reg_param': 0.01},0.6005,0.9585,0.00625,4.22,False,dataset_b,ULB European Cardholders Credit Card Fraud
+logistic_regression,{'reg_param': 0.1},0.5999,0.9553,0.00792,4.0,False,dataset_b,ULB European Cardholders Credit Card Fraud
+random_forest,"{'num_trees': 40, 'max_depth': 5}",0.7181,0.8982,0.00455,10.6,False,dataset_b,ULB European Cardholders Credit Card Fraud
+random_forest,"{'num_trees': 40, 'max_depth': 8}",0.7559,0.9243,0.00423,12.63,True,dataset_b,ULB European Cardholders Credit Card Fraud
+xgboost,"{'n_estimators': 100, 'max_depth': 4, 'learning_rate': 0.1}",0.7758,0.9674,0.00368,0.93,True,dataset_b,ULB European Cardholders Credit Card Fraud
+xgboost,"{'n_estimators': 100, 'max_depth': 6, 'learning_rate': 0.1}",0.7712,0.9592,0.00397,1.04,False,dataset_b,ULB European Cardholders Credit Card Fraud
+xgboost,"{'n_estimators': 100, 'max_depth': 6, 'learning_rate': 0.05}",0.7674,0.9516,0.00394,1.05,False,dataset_b,ULB European Cardholders Credit Card Fraud
+lightgbm,"{'n_estimators': 100, 'max_depth': 5, 'learning_rate': 0.03, 'num_leaves': 15, 'min_child_samples': 50, 'reg_lambda': 5.0}",0.757,0.9515,0.00399,0.65,False,dataset_b,ULB European Cardholders Credit Card Fraud
+lightgbm,"{'n_estimators': 100, 'max_depth': 6, 'learning_rate': 0.05, 'num_leaves': 31, 'min_child_samples': 30, 'reg_lambda': 1.0}",0.763,0.9672,0.00395,0.84,True,dataset_b,ULB European Cardholders Credit Card Fraud
+lightgbm,"{'n_estimators': 100, 'max_depth': 6, 'learning_rate': 0.1, 'num_leaves': 31, 'min_child_samples': 20, 'reg_lambda': 0.0}",0.203,0.7308,0.08636,0.66,False,dataset_b,ULB European Cardholders Credit Card Fraud
+catboost,"{'iterations': 100, 'depth': 4, 'learning_rate': 0.1}",0.7702,0.9606,0.00376,1.52,False,dataset_b,ULB European Cardholders Credit Card Fraud
+catboost,"{'iterations': 100, 'depth': 6, 'learning_rate': 0.1}",0.7776,0.9595,0.00373,1.67,True,dataset_b,ULB European Cardholders Credit Card Fraud
+catboost,"{'iterations': 100, 'depth': 6, 'learning_rate': 0.05}",0.7674,0.9521,0.00381,1.71,False,dataset_b,ULB European Cardholders Credit Card Fraud

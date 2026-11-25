@@ -1,0 +1,200 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.13.0/schema.json",
+  "name": "35c9bc2bd5e454d38ec9",
+  "position": {
+    "x": 30,
+    "y": 680,
+    "z": 7,
+    "height": 370,
+    "width": 1860,
+    "tabOrder": 7
+  },
+  "visual": {
+    "visualType": "tableEx",
+    "query": {
+      "queryState": {
+        "Values": {
+          "projections": [
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "model_comparison"
+                    }
+                  },
+                  "Property": "model_name"
+                }
+              },
+              "queryRef": "model_comparison.model_name",
+              "nativeQueryRef": "model_name"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "model_comparison"
+                    }
+                  },
+                  "Property": "precision"
+                }
+              },
+              "queryRef": "model_comparison.precision",
+              "nativeQueryRef": "precision"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "model_comparison"
+                    }
+                  },
+                  "Property": "recall"
+                }
+              },
+              "queryRef": "model_comparison.recall",
+              "nativeQueryRef": "recall"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "model_comparison"
+                    }
+                  },
+                  "Property": "f1_score"
+                }
+              },
+              "queryRef": "model_comparison.f1_score",
+              "nativeQueryRef": "f1_score"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "model_comparison"
+                    }
+                  },
+                  "Property": "roc_auc"
+                }
+              },
+              "queryRef": "model_comparison.roc_auc",
+              "nativeQueryRef": "roc_auc"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "model_comparison"
+                    }
+                  },
+                  "Property": "pr_auc"
+                }
+              },
+              "queryRef": "model_comparison.pr_auc",
+              "nativeQueryRef": "pr_auc"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "model_comparison"
+                    }
+                  },
+                  "Property": "log_loss"
+                }
+              },
+              "queryRef": "model_comparison.log_loss",
+              "nativeQueryRef": "log_loss"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "model_comparison"
+                    }
+                  },
+                  "Property": "true_positives"
+                }
+              },
+              "queryRef": "model_comparison.true_positives",
+              "nativeQueryRef": "true_positives"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "model_comparison"
+                    }
+                  },
+                  "Property": "false_positives"
+                }
+              },
+              "queryRef": "model_comparison.false_positives",
+              "nativeQueryRef": "false_positives"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "model_comparison"
+                    }
+                  },
+                  "Property": "false_negatives"
+                }
+              },
+              "queryRef": "model_comparison.false_negatives",
+              "nativeQueryRef": "false_negatives"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "model_comparison"
+                    }
+                  },
+                  "Property": "training_time_sec"
+                }
+              },
+              "queryRef": "model_comparison.training_time_sec",
+              "nativeQueryRef": "training_time_sec"
+            }
+          ]
+        }
+      }
+    },
+    "drillFilterOtherVisuals": true,
+    "visualContainerObjects": {
+      "title": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "text": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Held-Out Classifier Evaluation Scorecard'"
+                }
+              }
+            }
+          }
+        }
+      ]
+    }
+  }
+}

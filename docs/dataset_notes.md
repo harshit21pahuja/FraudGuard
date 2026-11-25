@@ -15,33 +15,21 @@
 
 ---
 
-## Dataset B Candidates Assessment (Second Dataset)
-
-### Candidate 1 (Recommended): Credit Card Fraud Detection (European Cardholders — ULB)
-- **Source**: Université Libre de Bruxelles (ULB) Machine Learning Group / Kaggle (`https://www.kaggle.com/datasets/mlg-ulb/creditcardfraud`)
+## Dataset B (Finalized): Credit Card Fraud Detection (European Cardholders — ULB)
+- **Status**: **Approved & Finalized** (`data/raw/dataset_b/creditcard.csv`, 141.81 MB)
+- **Source**: Université Libre de Bruxelles (ULB) Machine Learning Group / OpenML ID 1597 (`https://www.openml.org/d/1597`, mirror of `https://www.kaggle.com/datasets/mlg-ulb/creditcardfraud`)
 - **Nature**: **100% Real-world**. Real credit card transactions made by European cardholders in September 2013 over a two-day period.
 - **Structure**:
   - Rows: 284,807 transactions.
-  - Features: 30 numerical input features: `Time`, `Amount`, and 28 principal components (`V1` to `V28`) obtained via PCA for confidentiality.
+  - Features: 29 numerical input features in the OpenML 1597 export: `Amount` and 28 principal components (`V1` to `V28`) obtained via PCA for confidentiality (the raw `Time` index is omitted as an ignore-attribute in OpenML 1597).
   - Target Column: `Class` (0 = legitimate, 1 = fraudulent).
-- **Class Balance**: 492 fraud cases out of 284,807 transactions (0.172% fraud prevalence — extreme imbalance).
-- **Licensing**: Open Database License (ODbL). Free for academic and research use.
+- **Class Balance**: 492 fraud cases out of 284,807 transactions (0.1727% fraud prevalence — extreme imbalance, 284,315 legitimate).
+- **Licensing**: Open Database License (ODbL) / Public. Free for academic and research use.
 - **Why It Is Ideal**:
-  - **Academic Rigor**: It is the gold-standard benchmark in financial fraud literature (cited in >2,000 papers).
-  - **Complementary Contrast**: Perfectly contrasts with Dataset A (dense numerical PCA features vs. high-dimensional heterogeneous e-commerce metadata with categorical variables and missing values).
+  - **Academic Rigor**: Gold-standard benchmark in financial fraud literature (cited in >2,000 papers).
+  - **Complementary Contrast**: Contrasts sharply with Dataset A (dense numerical PCA features with zero missing values and 0.1727% fraud vs. high-dimensional heterogeneous e-commerce metadata with categorical variables, missing values, and ~3.5% fraud).
   - **Spark Fit**: Clean, highly reproducible, runs smoothly on PySpark without massive disk overhead.
 
-### Candidate 2: Bank Account Fraud (BAF) Suite (NeurIPS 2022)
-- **Source**: Feedzai Research / NeurIPS 2022 (`https://github.com/feedzai/bank-account-fraud`)
-- **Nature**: Semi-synthetic realistic benchmark designed to study fraud detection with realistic fairness and temporal drift.
-- **Structure**: 1,000,000 bank account opening applications, 32 tabular features.
-- **Target**: `fraud_bool` (~1.1% fraud rate).
-- **Assessment**: Excellent dataset, but semi-synthetic rather than purely observed real transactions.
-
-### Candidate 3: PaySim (Mobile Money Simulation)
-- **Source**: Kaggle (`https://www.kaggle.com/datasets/ealaxi/paysim1`)
-- **Nature**: **100% Synthetic simulation** based on an agent-based simulator (PaySim) scaled from a sample of real financial logs.
-- **Structure**: 6,362,620 rows, 11 columns.
-- **Assessment**: Frequently used in undergraduate projects, but faculty explicitly requested prioritizing real-world data. If chosen, it must be labeled explicitly as synthetic.
-
-**Recommendation**: Dataset B Candidate 1 (ULB European Cardholders) is the superior academic choice.
+### Rejected Alternatives (Documented for Provenance)
+- **Bank Account Fraud (BAF) Suite (NeurIPS 2022)**: Semi-synthetic tabular benchmark (~1.1% fraud rate); deferred in favor of 100% observed real transactions.
+- **PaySim (Mobile Money Simulation)**: 100% synthetic simulation; excluded per faculty preference for real-world datasets.

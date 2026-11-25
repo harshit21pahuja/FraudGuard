@@ -1,2 +1,3 @@
-dataset_name,total_records,legitimate_records,fraud_records,fraud_prevalence_pct,train_records,val_records,test_records,numerical_features,categorical_features
-IEEE-CIS Fraud Detection,500,470,30,6.0,350,75,75,8,5
+dataset_key,dataset_name,total_records,legitimate_records,fraud_records,fraud_prevalence_pct,train_records,val_records,test_records,numerical_features,categorical_features,dropped_high_null_features
+dataset_a,IEEE-CIS Fraud Detection,590540,569877,20663,3.499,412981,88467,89092,331,24,76
+dataset_b,ULB European Cardholders Credit Card Fraud,284807,284315,492,0.1727,199364,42721,42722,29,0,0

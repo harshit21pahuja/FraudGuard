@@ -1,0 +1,102 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.14.0/schema.json",
+  "name": "8dc14e4e4f6053c0b9bd",
+  "position": {
+    "x": 480,
+    "y": 20,
+    "z": 1,
+    "height": 240,
+    "width": 1410,
+    "tabOrder": 1
+  },
+  "visual": {
+    "visualType": "lineChart",
+    "query": {
+      "queryState": {
+        "Category": {
+          "projections": [
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "hourly_fraud_pattern"
+                    }
+                  },
+                  "Property": "hour_of_day"
+                }
+              },
+              "queryRef": "hourly_fraud_pattern.hour_of_day",
+              "nativeQueryRef": "hour_of_day",
+              "active": true
+            }
+          ]
+        },
+        "Series": {
+          "projections": [
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "hourly_fraud_pattern"
+                    }
+                  },
+                  "Property": "dataset_name"
+                }
+              },
+              "queryRef": "hourly_fraud_pattern.dataset_name",
+              "nativeQueryRef": "dataset_name"
+            }
+          ]
+        },
+        "Y": {
+          "projections": [
+            {
+              "field": {
+                "Aggregation": {
+                  "Expression": {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "hourly_fraud_pattern"
+                        }
+                      },
+                      "Property": "fraud_rate_pct"
+                    }
+                  },
+                  "Function": 1
+                }
+              },
+              "queryRef": "Avg(hourly_fraud_pattern.fraud_rate_pct)",
+              "nativeQueryRef": "Avg of fraud_rate_pct"
+            }
+          ]
+        }
+      }
+    },
+    "visualContainerObjects": {
+      "title": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "text": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Hourly Fraud Rate (%) Across 24-Hour Transaction Cycle'"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "drillFilterOtherVisuals": true
+  }
+}

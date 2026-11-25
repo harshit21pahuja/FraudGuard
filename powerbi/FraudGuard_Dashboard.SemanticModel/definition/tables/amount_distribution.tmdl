@@ -1,0 +1,75 @@
+table amount_distribution
+	lineageTag: a2b3746b-9ad5-5e3a-89f8-81d0d090f031
+
+	column target_value
+		dataType: int64
+		lineageTag: 5a2a0607-2b6c-5c3a-a187-85f321de5901
+		summarizeBy: none
+		sourceColumn: target_value
+
+	column count
+		dataType: int64
+		formatString: #,##0
+		lineageTag: b7616d14-5aa1-540d-bddf-dae0fd8d9105
+		summarizeBy: sum
+		sourceColumn: count
+
+	column min_amount
+		dataType: double
+		formatString: $#,##0.00
+		lineageTag: 337c78a6-8586-5383-b23b-c7f818fe025f
+		summarizeBy: min
+		sourceColumn: min_amount
+
+	column avg_amount
+		dataType: double
+		formatString: $#,##0.00
+		lineageTag: 447fabf7-2325-594c-9f6b-fb23aac9bee9
+		summarizeBy: average
+		sourceColumn: avg_amount
+
+	column stddev_amount
+		dataType: double
+		formatString: $#,##0.00
+		lineageTag: 29ce92d0-61f4-5952-8ccd-01b2e9226617
+		summarizeBy: average
+		sourceColumn: stddev_amount
+
+	column max_amount
+		dataType: double
+		formatString: $#,##0.00
+		lineageTag: 56253255-5784-5c8b-91f9-ca14c9768abb
+		summarizeBy: max
+		sourceColumn: max_amount
+
+	column class_label
+		dataType: string
+		lineageTag: 6ffaac25-e931-5fe1-b414-9be1d5d95449
+		summarizeBy: none
+		sourceColumn: class_label
+
+	column dataset_name
+		dataType: string
+		lineageTag: 2e734e35-bce9-501d-a63b-87a3ecd86682
+		summarizeBy: none
+		sourceColumn: dataset_name
+
+	column Class
+		dataType: string
+		lineageTag: f1c5c910-aa16-4c73-b523-a21eb668a7aa
+		summarizeBy: none
+		sourceColumn: Class
+
+		annotation SummarizationSetBy = Automatic
+
+	partition amount_distribution = m
+		mode: import
+		source =
+				let
+					Source = Csv.Document(File.Contents("C:\Users\Harshit Pahuja\Desktop\Big_Data\powerbi\data\amount_distribution.csv"), [Delimiter=",", Encoding=65001, QuoteStyle=QuoteStyle.Csv]),
+					#"Promoted Headers" = Table.PromoteHeaders(Source, [PromoteAllScalars=true]),
+					#"Normalized Target" = Table.RenameColumns(#"Promoted Headers", {{Table.ColumnNames(#"Promoted Headers"){0}, "target_value"}}),
+					#"Changed Type" = Table.TransformColumnTypes(#"Normalized Target", {{"target_value", Int64.Type}, {"count", Int64.Type}, {"min_amount", type number}, {"avg_amount", type number}, {"stddev_amount", type number}, {"max_amount", type number}, {"class_label", type text}, {"dataset_name", type text}})
+				in
+					#"Changed Type"
+

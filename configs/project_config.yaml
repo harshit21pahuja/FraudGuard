@@ -9,8 +9,8 @@ project:
 spark:
   app_name: "FraudGuard-SparkML"
   master: "local[*]"
-  driver_memory: "4g"
-  executor_memory: "4g"
+  driver_memory: "6g"
+  executor_memory: "6g"
   log_level: "WARN"
   sql_shuffle_partitions: 8
 
@@ -32,13 +32,15 @@ datasets:
     test_ratio: 0.15
 
   dataset_b:
-    name: "Dataset B (Pending User Approval)"
-    candidate_status: "Pending User Approval - Candidates Under Review"
-    selected_candidate: null
-    type: "TBD"
+    name: "ULB European Cardholders Credit Card Fraud"
+    candidate_status: "Finalized (Real-World ODbL)"
+    selected_candidate: "mlg-ulb/creditcardfraud"
+    type: "Real-world (ULB Machine Learning Group / OpenML ID 1597)"
     raw_dir: "data/raw/dataset_b"
-    transaction_file: null
-    target_column: null
+    transaction_file: "creditcard.csv"
+    identity_file: null
+    join_key: null
+    target_column: "Class"
     interim_path: "data/interim/dataset_b_clean.parquet"
     processed_path: "data/processed/dataset_b_processed.parquet"
     time_column: null
@@ -48,30 +50,30 @@ datasets:
     test_ratio: 0.15
 
 dev_mode:
-  sample_fraction: 0.05 # For fast smoke testing and debugging
-  enabled: true
+  sample_fraction: 0.05 # Used only when --dev flag is passed
+  enabled: false
 
 models:
   logistic_regression:
-    max_iter: 40
+    max_iter: 50
     reg_param: 0.01
     elastic_net_param: 0.0
   random_forest:
-    num_trees: 25
-    max_depth: 6
+    num_trees: 40
+    max_depth: 8
     max_bins: 32
   xgboost:
-    n_estimators: 30
-    max_depth: 5
+    n_estimators: 100
+    max_depth: 6
     learning_rate: 0.1
   lightgbm:
-    n_estimators: 30
-    max_depth: 5
+    n_estimators: 100
+    max_depth: 6
     learning_rate: 0.1
     verbose: -1
   catboost:
-    iterations: 30
-    depth: 5
+    iterations: 100
+    depth: 6
     learning_rate: 0.1
     verbose: 0
 

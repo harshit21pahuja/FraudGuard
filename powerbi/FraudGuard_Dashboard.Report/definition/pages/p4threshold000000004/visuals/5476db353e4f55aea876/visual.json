@@ -1,0 +1,186 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.13.0/schema.json",
+  "name": "5476db353e4f55aea876",
+  "position": {
+    "x": 30,
+    "y": 680,
+    "z": 5,
+    "height": 370,
+    "width": 1860,
+    "tabOrder": 5
+  },
+  "visual": {
+    "visualType": "tableEx",
+    "query": {
+      "queryState": {
+        "Values": {
+          "projections": [
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "threshold_analysis"
+                    }
+                  },
+                  "Property": "threshold"
+                }
+              },
+              "queryRef": "threshold_analysis.threshold",
+              "nativeQueryRef": "threshold"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "threshold_analysis"
+                    }
+                  },
+                  "Property": "precision"
+                }
+              },
+              "queryRef": "threshold_analysis.precision",
+              "nativeQueryRef": "precision"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "threshold_analysis"
+                    }
+                  },
+                  "Property": "recall"
+                }
+              },
+              "queryRef": "threshold_analysis.recall",
+              "nativeQueryRef": "recall"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "threshold_analysis"
+                    }
+                  },
+                  "Property": "f1_score"
+                }
+              },
+              "queryRef": "threshold_analysis.f1_score",
+              "nativeQueryRef": "f1_score"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "threshold_analysis"
+                    }
+                  },
+                  "Property": "true_positives"
+                }
+              },
+              "queryRef": "threshold_analysis.true_positives",
+              "nativeQueryRef": "true_positives"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "threshold_analysis"
+                    }
+                  },
+                  "Property": "false_positives"
+                }
+              },
+              "queryRef": "threshold_analysis.false_positives",
+              "nativeQueryRef": "false_positives"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "threshold_analysis"
+                    }
+                  },
+                  "Property": "false_negatives"
+                }
+              },
+              "queryRef": "threshold_analysis.false_negatives",
+              "nativeQueryRef": "false_negatives"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "threshold_analysis"
+                    }
+                  },
+                  "Property": "flagged_volume"
+                }
+              },
+              "queryRef": "threshold_analysis.flagged_volume",
+              "nativeQueryRef": "flagged_volume"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "threshold_analysis"
+                    }
+                  },
+                  "Property": "alert_rate_pct"
+                }
+              },
+              "queryRef": "threshold_analysis.alert_rate_pct",
+              "nativeQueryRef": "alert_rate_pct"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "threshold_analysis"
+                    }
+                  },
+                  "Property": "total_operational_cost"
+                }
+              },
+              "queryRef": "threshold_analysis.total_operational_cost",
+              "nativeQueryRef": "total_operational_cost"
+            }
+          ]
+        }
+      }
+    },
+    "drillFilterOtherVisuals": true,
+    "visualContainerObjects": {
+      "title": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "text": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Decision Threshold Sensitivity Schedule (0.05 – 0.95)'"
+                }
+              }
+            }
+          }
+        }
+      ]
+    }
+  }
+}

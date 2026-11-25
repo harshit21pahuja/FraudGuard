@@ -1,0 +1,20 @@
+threshold,precision,recall,f1_score,true_positives,false_positives,true_negatives,false_negatives,flagged_volume,alert_rate_pct,total_operational_cost,dataset_key,dataset_name,model_name
+0.05,0.2515,0.7095,0.3714,2154,6410,79021,882,8564,9.68,505100.0,dataset_a,IEEE-CIS Fraud Detection,lightgbm
+0.1,0.4206,0.5856,0.4896,1778,2449,82982,1258,4227,4.78,653490.0,dataset_a,IEEE-CIS Fraud Detection,lightgbm
+0.15,0.527,0.5138,0.5203,1560,1400,84031,1476,2960,3.35,752000.0,dataset_a,IEEE-CIS Fraud Detection,lightgbm
+0.2,0.6064,0.4608,0.5237,1399,908,84523,1637,2307,2.61,827580.0,dataset_a,IEEE-CIS Fraud Detection,lightgbm
+0.25,0.6653,0.4249,0.5186,1290,649,84782,1746,1939,2.19,879490.0,dataset_a,IEEE-CIS Fraud Detection,lightgbm
+0.3,0.7113,0.3969,0.5095,1205,489,84942,1831,1694,1.91,920390.0,dataset_a,IEEE-CIS Fraud Detection,lightgbm
+0.35,0.757,0.3765,0.5029,1143,367,85064,1893,1510,1.71,950170.0,dataset_a,IEEE-CIS Fraud Detection,lightgbm
+0.4,0.7847,0.3554,0.4892,1079,296,85135,1957,1375,1.55,981460.0,dataset_a,IEEE-CIS Fraud Detection,lightgbm
+0.45,0.8063,0.3386,0.4769,1028,247,85184,2008,1275,1.44,1006470.0,dataset_a,IEEE-CIS Fraud Detection,lightgbm
+0.5,0.8257,0.3215,0.4628,976,206,85225,2060,1182,1.34,1032060.0,dataset_a,IEEE-CIS Fraud Detection,lightgbm
+0.55,0.8413,0.3073,0.4502,933,176,85255,2103,1109,1.25,1053260.0,dataset_a,IEEE-CIS Fraud Detection,lightgbm
+0.6,0.8512,0.2922,0.4351,887,155,85276,2149,1042,1.18,1076050.0,dataset_a,IEEE-CIS Fraud Detection,lightgbm
+0.65,0.8708,0.2796,0.4233,849,126,85305,2187,975,1.1,1094760.0,dataset_a,IEEE-CIS Fraud Detection,lightgbm
+0.7,0.8782,0.2635,0.4054,800,111,85320,2236,911,1.03,1119110.0,dataset_a,IEEE-CIS Fraud Detection,lightgbm
+0.75,0.8992,0.2467,0.3872,749,84,85347,2287,833,0.94,1144340.0,dataset_a,IEEE-CIS Fraud Detection,lightgbm
+0.8,0.9185,0.2302,0.3681,699,62,85369,2337,761,0.86,1169120.0,dataset_a,IEEE-CIS Fraud Detection,lightgbm
+0.85,0.9324,0.2088,0.3412,634,46,85385,2402,680,0.77,1201460.0,dataset_a,IEEE-CIS Fraud Detection,lightgbm
+0.9,0.9365,0.1749,0.2948,531,36,85395,2505,567,0.64,1252860.0,dataset_a,IEEE-CIS Fraud Detection,lightgbm
+0.95,0.9694,0.1146,0.205,348,11,85420,2688,359,0.41,1344110.0,dataset_a,IEEE-CIS Fraud Detection,lightgbm

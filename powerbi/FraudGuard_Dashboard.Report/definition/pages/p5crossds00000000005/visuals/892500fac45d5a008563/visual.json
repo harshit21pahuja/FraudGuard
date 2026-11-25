@@ -1,0 +1,144 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.13.0/schema.json",
+  "name": "892500fac45d5a008563",
+  "position": {
+    "x": 30,
+    "y": 680,
+    "z": 5,
+    "height": 370,
+    "width": 1860,
+    "tabOrder": 5
+  },
+  "visual": {
+    "visualType": "tableEx",
+    "query": {
+      "queryState": {
+        "Values": {
+          "projections": [
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "hyperparameter_tuning"
+                    }
+                  },
+                  "Property": "dataset_name"
+                }
+              },
+              "queryRef": "hyperparameter_tuning.dataset_name",
+              "nativeQueryRef": "dataset_name"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "hyperparameter_tuning"
+                    }
+                  },
+                  "Property": "model_name"
+                }
+              },
+              "queryRef": "hyperparameter_tuning.model_name",
+              "nativeQueryRef": "model_name"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "hyperparameter_tuning"
+                    }
+                  },
+                  "Property": "hyperparameters"
+                }
+              },
+              "queryRef": "hyperparameter_tuning.hyperparameters",
+              "nativeQueryRef": "hyperparameters"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "hyperparameter_tuning"
+                    }
+                  },
+                  "Property": "val_pr_auc"
+                }
+              },
+              "queryRef": "hyperparameter_tuning.val_pr_auc",
+              "nativeQueryRef": "val_pr_auc"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "hyperparameter_tuning"
+                    }
+                  },
+                  "Property": "val_roc_auc"
+                }
+              },
+              "queryRef": "hyperparameter_tuning.val_roc_auc",
+              "nativeQueryRef": "val_roc_auc"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "hyperparameter_tuning"
+                    }
+                  },
+                  "Property": "val_log_loss"
+                }
+              },
+              "queryRef": "hyperparameter_tuning.val_log_loss",
+              "nativeQueryRef": "val_log_loss"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "hyperparameter_tuning"
+                    }
+                  },
+                  "Property": "selected"
+                }
+              },
+              "queryRef": "hyperparameter_tuning.selected",
+              "nativeQueryRef": "selected"
+            }
+          ]
+        }
+      }
+    },
+    "drillFilterOtherVisuals": true,
+    "visualContainerObjects": {
+      "title": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "text": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Validation Hyperparameter Search Results Across Datasets'"
+                }
+              }
+            }
+          }
+        }
+      ]
+    }
+  }
+}

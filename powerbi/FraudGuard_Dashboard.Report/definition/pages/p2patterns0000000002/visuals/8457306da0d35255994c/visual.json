@@ -1,0 +1,102 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.13.0/schema.json",
+  "name": "8457306da0d35255994c",
+  "position": {
+    "x": 970,
+    "y": 670,
+    "z": 6,
+    "height": 380,
+    "width": 920,
+    "tabOrder": 6
+  },
+  "visual": {
+    "visualType": "tableEx",
+    "query": {
+      "queryState": {
+        "Values": {
+          "projections": [
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "missingness_profile"
+                    }
+                  },
+                  "Property": "dataset_name"
+                }
+              },
+              "queryRef": "missingness_profile.dataset_name",
+              "nativeQueryRef": "dataset_name"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "missingness_profile"
+                    }
+                  },
+                  "Property": "column_name"
+                }
+              },
+              "queryRef": "missingness_profile.column_name",
+              "nativeQueryRef": "column_name"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "missingness_profile"
+                    }
+                  },
+                  "Property": "null_count"
+                }
+              },
+              "queryRef": "missingness_profile.null_count",
+              "nativeQueryRef": "null_count"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "missingness_profile"
+                    }
+                  },
+                  "Property": "missing_percentage"
+                }
+              },
+              "queryRef": "missingness_profile.missing_percentage",
+              "nativeQueryRef": "missing_percentage"
+            }
+          ]
+        }
+      }
+    },
+    "drillFilterOtherVisuals": true,
+    "visualContainerObjects": {
+      "title": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "text": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Data Quality & Missingness Audit'"
+                }
+              }
+            }
+          }
+        }
+      ]
+    }
+  }
+}

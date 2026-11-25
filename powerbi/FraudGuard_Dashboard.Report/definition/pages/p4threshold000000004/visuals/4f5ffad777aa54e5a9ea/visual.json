@@ -1,0 +1,60 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.13.0/schema.json",
+  "name": "4f5ffad777aa54e5a9ea",
+  "position": {
+    "x": 970,
+    "y": 20,
+    "z": 2,
+    "height": 170,
+    "width": 440,
+    "tabOrder": 2
+  },
+  "visual": {
+    "visualType": "cardVisual",
+    "query": {
+      "queryState": {
+        "Data": {
+          "projections": [
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "threshold_analysis"
+                    }
+                  },
+                  "Property": "Optimal Threshold"
+                }
+              },
+              "queryRef": "threshold_analysis.Optimal Threshold",
+              "nativeQueryRef": "Optimal Threshold"
+            }
+          ]
+        }
+      }
+    },
+    "drillFilterOtherVisuals": true,
+    "visualContainerObjects": {
+      "title": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "text": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Cost-Optimal Decision Threshold'"
+                }
+              }
+            }
+          }
+        }
+      ]
+    }
+  }
+}

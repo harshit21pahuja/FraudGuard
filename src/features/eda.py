@@ -97,34 +97,78 @@ def compute_amount_distribution(
     return stats.toPandas()
 
 
-def export_eda_reports(df: DataFrame, output_dir: Path) -> Dict[str, Path]:
+def compute_hourly_fraud_pattern(
+    df: DataFrame, time_col: str = "TransactionDT", target_col: str = "isFraud"
+) -> pd.DataFrame:
+    """Calculate hourly transaction volume and fraud prevalence across a 24-hour cycle."""
+    if time_col not in df.columns or target_col not in df.columns:
+        return pd.DataFrame()
+
+    hourly_df = (
+        df.withColumn("hour_of_day", (F.floor(F.col(time_col) / 3600.0) % 24).cast("int"))
+        .groupBy("hour_of_day")
+        .agg(
+            F.count(target_col).alias("total_transactions"),
+            F.sum(F.col(target_col).cast("long")).alias("fraud_transactions"),
+        )
+        .withColumn(
+            "fraud_rate_pct",
+            F.round((F.col("fraud_transactions") / F.col("total_transactions")) * 100, 4),
+        )
+        .orderBy("hour_of_day")
+    )
+    return hourly_df.toPandas()
+
+
+def export_eda_reports(
+    df: DataFrame,
+    output_dir: Path,
+    target_col: str = "isFraud",
+    amount_col: str | None = None,
+    time_col: str | None = None,
+    dataset_name: str = "Dataset",
+) -> Dict[str, Path]:
     """Generate and export all EDA summaries for Power BI Page 2 (Fraud Pattern Analysis)."""
     output_dir.mkdir(parents=True, exist_ok=True)
     paths = {}
 
     logger.info("Computing missingness profile...")
     missing_df = compute_missingness_profile(df, top_n=30)
+    missing_df["dataset_name"] = dataset_name
     p_missing = output_dir / "missingness_profile.csv"
     missing_df.to_csv(p_missing, index=False)
     paths["missingness"] = p_missing
 
-    if "TransactionAmt" in df.columns:
-        logger.info("Computing transaction amount statistics...")
-        amt_df = compute_amount_distribution(df)
+    resolved_amt = amount_col or ("TransactionAmt" if "TransactionAmt" in df.columns else ("Amount" if "Amount" in df.columns else None))
+    if resolved_amt and resolved_amt in df.columns:
+        logger.info(f"Computing transaction amount statistics ({resolved_amt})...")
+        amt_df = compute_amount_distribution(df, amount_col=resolved_amt, target_col=target_col)
+        amt_df["dataset_name"] = dataset_name
         p_amt = output_dir / "amount_distribution.csv"
         amt_df.to_csv(p_amt, index=False)
         paths["amount_distribution"] = p_amt
 
+    resolved_time = time_col or ("TransactionDT" if "TransactionDT" in df.columns else ("Time" if "Time" in df.columns else None))
+    if resolved_time and resolved_time in df.columns:
+        logger.info(f"Computing hourly fraud pattern ({resolved_time})...")
+        hourly_df = compute_hourly_fraud_pattern(df, time_col=resolved_time, target_col=target_col)
+        hourly_df["dataset_name"] = dataset_name
+        p_hourly = output_dir / "hourly_fraud_pattern.csv"
+        hourly_df.to_csv(p_hourly, index=False)
+        paths["hourly_fraud_pattern"] = p_hourly
+
     if "ProductCD" in df.columns:
         logger.info("Computing fraud distribution by ProductCD...")
-        prod_df = compute_fraud_by_categorical(df, "ProductCD")
+        prod_df = compute_fraud_by_categorical(df, "ProductCD", target_col=target_col)
+        prod_df["dataset_name"] = dataset_name
         p_prod = output_dir / "fraud_by_product.csv"
         prod_df.to_csv(p_prod, index=False)
         paths["fraud_by_product"] = p_prod
 
     if "card4" in df.columns:
         logger.info("Computing fraud distribution by Card Brand (card4)...")
-        card_df = compute_fraud_by_categorical(df, "card4")
+        card_df = compute_fraud_by_categorical(df, "card4", target_col=target_col)
+        card_df["dataset_name"] = dataset_name
         p_card = output_dir / "fraud_by_card.csv"
         card_df.to_csv(p_card, index=False)
         paths["fraud_by_card"] = p_card

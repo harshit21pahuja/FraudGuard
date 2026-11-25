@@ -18,6 +18,7 @@ In extreme imbalance (e.g. 99.8% non-fraud), standard accuracy is a misleading m
 - **F1-Score**: Harmonic mean of Precision and Recall.
 - **ROC-AUC**: Evaluates ranking capability across all possible thresholds; insensitive to class skew.
 - **PR-AUC (Precision-Recall AUC)**: Highly sensitive to the positive (minority) class; critical for fraud benchmark comparisons.
+- **Log Loss (Binary Cross-Entropy)**: $-\frac{1}{N}\sum_{i=1}^{N}\left[y_i \log(\hat{p}_i) + (1-y_i)\log(1-\hat{p}_i)\right]$ — Evaluates probability calibration across classifiers.
 
 ## 4. Final Machine Learning Model Suite
 Following academic guidance and faculty review, FraudGuard implements a structured comparison across five distinct classification paradigms:

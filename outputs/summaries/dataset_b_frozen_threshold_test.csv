@@ -1,0 +1,2 @@
+dataset_key,dataset_name,model_name,selection_metric,val_pr_auc,frozen_threshold,val_operational_cost,total_test_samples,precision,recall,f1_score,true_positives,false_positives,true_negatives,false_negatives,flagged_volume,alert_rate_pct,total_operational_cost
+dataset_b,ULB European Cardholders Credit Card Fraud,random_forest,val_pr_auc,0.8688,0.05,5090.0,42722,0.5345,0.8378,0.6526,62,54,42594,12,116,0.27,6540.0

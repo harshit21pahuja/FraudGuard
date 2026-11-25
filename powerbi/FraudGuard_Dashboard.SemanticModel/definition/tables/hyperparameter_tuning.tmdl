@@ -1,0 +1,71 @@
+table hyperparameter_tuning
+	lineageTag: 6da5ed92-782a-5a8f-8d16-a5016720e43c
+
+	column model_name
+		dataType: string
+		lineageTag: c3ce48c9-4c42-5a90-9e40-80c3488aaf7d
+		summarizeBy: none
+		sourceColumn: model_name
+
+	column hyperparameters
+		dataType: string
+		lineageTag: e3831f66-6cb3-5413-a634-f9d2b391122d
+		summarizeBy: none
+		sourceColumn: hyperparameters
+
+	column val_pr_auc
+		dataType: double
+		formatString: 0.0000
+		lineageTag: b5ad0bca-c738-5305-9362-1860b7ec7386
+		summarizeBy: average
+		sourceColumn: val_pr_auc
+
+	column val_roc_auc
+		dataType: double
+		formatString: 0.0000
+		lineageTag: 68c8fbf6-a546-5b3f-8ac1-a8a62668a4ff
+		summarizeBy: average
+		sourceColumn: val_roc_auc
+
+	column val_log_loss
+		dataType: double
+		formatString: 0.00000
+		lineageTag: 96e839c6-df5e-5b46-beb7-ee288b0d2ee8
+		summarizeBy: average
+		sourceColumn: val_log_loss
+
+	column train_time_sec
+		dataType: double
+		formatString: 0.00
+		lineageTag: 1ac52231-0fbc-524f-9737-ab1e774164f9
+		summarizeBy: sum
+		sourceColumn: train_time_sec
+
+	column selected
+		dataType: boolean
+		lineageTag: 43abc742-0ae3-5f3f-bfd9-0bbd02703b19
+		summarizeBy: none
+		sourceColumn: selected
+
+	column dataset_key
+		dataType: string
+		lineageTag: fea90e34-d780-53fd-ad4f-db85b21d1da8
+		summarizeBy: none
+		sourceColumn: dataset_key
+
+	column dataset_name
+		dataType: string
+		lineageTag: 004b7e5e-77a2-5b4c-b89d-0ac515e3db9e
+		summarizeBy: none
+		sourceColumn: dataset_name
+
+	partition hyperparameter_tuning = m
+		mode: import
+		source =
+				let
+					Source = Csv.Document(File.Contents("C:\Users\Harshit Pahuja\Desktop\Big_Data\powerbi\data\hyperparameter_tuning.csv"), [Delimiter=",", Encoding=65001, QuoteStyle=QuoteStyle.Csv]),
+					#"Promoted Headers" = Table.PromoteHeaders(Source, [PromoteAllScalars=true]),
+					#"Changed Type" = Table.TransformColumnTypes(#"Promoted Headers", {{"model_name", type text}, {"hyperparameters", type text}, {"val_pr_auc", type number}, {"val_roc_auc", type number}, {"val_log_loss", type number}, {"train_time_sec", type number}, {"selected", type logical}, {"dataset_key", type text}, {"dataset_name", type text}})
+				in
+					#"Changed Type"
+

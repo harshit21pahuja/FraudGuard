@@ -1,0 +1,60 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.13.0/schema.json",
+  "name": "6f90120467e85153be3d",
+  "position": {
+    "x": 1540,
+    "y": 20,
+    "z": 4,
+    "height": 180,
+    "width": 350,
+    "tabOrder": 4
+  },
+  "visual": {
+    "visualType": "cardVisual",
+    "query": {
+      "queryState": {
+        "Data": {
+          "projections": [
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "dataset_summary"
+                    }
+                  },
+                  "Property": "Fraud Prevalence Pct"
+                }
+              },
+              "queryRef": "dataset_summary.Fraud Prevalence Pct",
+              "nativeQueryRef": "Fraud Prevalence Pct"
+            }
+          ]
+        }
+      }
+    },
+    "drillFilterOtherVisuals": true,
+    "visualContainerObjects": {
+      "title": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "text": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Fraud Prevalence (%)'"
+                }
+              }
+            }
+          }
+        }
+      ]
+    }
+  }
+}

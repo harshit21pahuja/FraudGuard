@@ -1,0 +1,3 @@
+Class,count,min_amount,avg_amount,stddev_amount,max_amount,class_label,dataset_name
+0,284315,0.0,88.29,250.11,25691.16,Legitimate,ULB European Cardholders Credit Card Fraud
+1,492,0.0,122.21,256.68,2125.87,Fraudulent,ULB European Cardholders Credit Card Fraud

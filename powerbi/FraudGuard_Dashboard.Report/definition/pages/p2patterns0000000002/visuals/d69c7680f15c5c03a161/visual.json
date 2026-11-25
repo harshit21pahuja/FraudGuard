@@ -1,0 +1,144 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.13.0/schema.json",
+  "name": "d69c7680f15c5c03a161",
+  "position": {
+    "x": 30,
+    "y": 670,
+    "z": 5,
+    "height": 380,
+    "width": 910,
+    "tabOrder": 5
+  },
+  "visual": {
+    "visualType": "tableEx",
+    "query": {
+      "queryState": {
+        "Values": {
+          "projections": [
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "amount_distribution"
+                    }
+                  },
+                  "Property": "dataset_name"
+                }
+              },
+              "queryRef": "amount_distribution.dataset_name",
+              "nativeQueryRef": "dataset_name"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "amount_distribution"
+                    }
+                  },
+                  "Property": "class_label"
+                }
+              },
+              "queryRef": "amount_distribution.class_label",
+              "nativeQueryRef": "class_label"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "amount_distribution"
+                    }
+                  },
+                  "Property": "count"
+                }
+              },
+              "queryRef": "amount_distribution.count",
+              "nativeQueryRef": "count"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "amount_distribution"
+                    }
+                  },
+                  "Property": "min_amount"
+                }
+              },
+              "queryRef": "amount_distribution.min_amount",
+              "nativeQueryRef": "min_amount"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "amount_distribution"
+                    }
+                  },
+                  "Property": "avg_amount"
+                }
+              },
+              "queryRef": "amount_distribution.avg_amount",
+              "nativeQueryRef": "avg_amount"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "amount_distribution"
+                    }
+                  },
+                  "Property": "stddev_amount"
+                }
+              },
+              "queryRef": "amount_distribution.stddev_amount",
+              "nativeQueryRef": "stddev_amount"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "amount_distribution"
+                    }
+                  },
+                  "Property": "max_amount"
+                }
+              },
+              "queryRef": "amount_distribution.max_amount",
+              "nativeQueryRef": "max_amount"
+            }
+          ]
+        }
+      }
+    },
+    "drillFilterOtherVisuals": true,
+    "visualContainerObjects": {
+      "title": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "text": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Transaction Amount Distribution Profile'"
+                }
+              }
+            }
+          }
+        }
+      ]
+    }
+  }
+}

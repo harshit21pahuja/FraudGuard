@@ -1,0 +1,32 @@
+relationship e93ebd44-6ed4-550a-834b-d43c09ae7402
+	fromColumn: model_comparison.dataset_name
+	toColumn: dataset_summary.dataset_name
+
+relationship 388e9ec8-53ee-5a2e-82e9-e43272933eee
+	fromColumn: threshold_analysis.dataset_name
+	toColumn: dataset_summary.dataset_name
+
+relationship 7c463052-3e2c-520e-88f1-0cd788d5d92e
+	fromColumn: hyperparameter_tuning.dataset_name
+	toColumn: dataset_summary.dataset_name
+
+relationship 6e92b8db-0e2c-50ff-bc04-67510e4f1cb6
+	fromColumn: amount_distribution.dataset_name
+	toColumn: dataset_summary.dataset_name
+
+relationship 8a7a8c60-e3b3-56ef-8f28-ed9e06ea7f69
+	fromColumn: missingness_profile.dataset_name
+	toColumn: dataset_summary.dataset_name
+
+relationship f5912b51-b2d5-575a-b3b8-d78c5a1e7d99
+	fromColumn: hourly_fraud_pattern.dataset_name
+	toColumn: dataset_summary.dataset_name
+
+relationship 34a8afca-4ce0-5ab6-9e9d-813a7bff690c
+	fromColumn: fraud_by_product.dataset_name
+	toColumn: dataset_summary.dataset_name
+
+relationship 3860aaae-c784-5912-9f7a-bcb4203ec228
+	fromColumn: fraud_by_card.dataset_name
+	toColumn: dataset_summary.dataset_name
+

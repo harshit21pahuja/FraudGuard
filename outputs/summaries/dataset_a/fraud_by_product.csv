@@ -1,0 +1,6 @@
+ProductCD,total_transactions,fraud_transactions,legitimate_transactions,fraud_rate_pct,dataset_name
+W,439670,8969,430701,2.04,IEEE-CIS Fraud Detection
+C,68519,8008,60511,11.69,IEEE-CIS Fraud Detection
+R,37699,1426,36273,3.78,IEEE-CIS Fraud Detection
+H,33024,1574,31450,4.77,IEEE-CIS Fraud Detection
+S,11628,686,10942,5.9,IEEE-CIS Fraud Detection

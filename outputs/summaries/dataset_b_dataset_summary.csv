@@ -1,0 +1,2 @@
+dataset_key,dataset_name,total_records,legitimate_records,fraud_records,fraud_prevalence_pct,train_records,val_records,test_records,numerical_features,categorical_features,dropped_high_null_features
+dataset_b,ULB European Cardholders Credit Card Fraud,284807,284315,492,0.1727,199364,42721,42722,29,0,0

@@ -1,0 +1,122 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.14.0/schema.json",
+  "name": "02530d99e24355349c8c",
+  "position": {
+    "x": 30,
+    "y": 230,
+    "z": 5,
+    "height": 430,
+    "width": 910,
+    "tabOrder": 5
+  },
+  "visual": {
+    "visualType": "clusteredColumnChart",
+    "query": {
+      "queryState": {
+        "Category": {
+          "projections": [
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "dataset_summary"
+                    }
+                  },
+                  "Property": "dataset_name"
+                }
+              },
+              "queryRef": "dataset_summary.dataset_name",
+              "nativeQueryRef": "dataset_name",
+              "active": true
+            }
+          ]
+        },
+        "Y": {
+          "projections": [
+            {
+              "field": {
+                "Aggregation": {
+                  "Expression": {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "dataset_summary"
+                        }
+                      },
+                      "Property": "train_records"
+                    }
+                  },
+                  "Function": 0
+                }
+              },
+              "queryRef": "Sum(dataset_summary.train_records)",
+              "nativeQueryRef": "Sum of train_records"
+            },
+            {
+              "field": {
+                "Aggregation": {
+                  "Expression": {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "dataset_summary"
+                        }
+                      },
+                      "Property": "val_records"
+                    }
+                  },
+                  "Function": 0
+                }
+              },
+              "queryRef": "Sum(dataset_summary.val_records)",
+              "nativeQueryRef": "Sum of val_records"
+            },
+            {
+              "field": {
+                "Aggregation": {
+                  "Expression": {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "dataset_summary"
+                        }
+                      },
+                      "Property": "test_records"
+                    }
+                  },
+                  "Function": 0
+                }
+              },
+              "queryRef": "Sum(dataset_summary.test_records)",
+              "nativeQueryRef": "Sum of test_records"
+            }
+          ]
+        }
+      }
+    },
+    "visualContainerObjects": {
+      "title": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "text": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Train / Validation / Test Partition Sizes'"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "drillFilterOtherVisuals": true
+  }
+}

@@ -1,32 +1,26 @@
-# Power BI Dashboard Specification — FraudGuard
+# FraudGuard Business Intelligence Module (`powerbi/`)
 
-## Overview
-This directory stores documentation and verified pipeline export files intended for ingestion by Microsoft Power BI Desktop.
+This module integrates batch PySpark fraud detection outputs into an interactive **5-page Microsoft Power BI Desktop** dashboard (`FraudGuard_Dashboard.pbip`).
 
-## Academic & Engineering Rules
-1. **Zero Fabrication**: All tables imported into Power BI must be direct exports produced by the PySpark pipeline from real held-out model evaluations and data summaries.
-2. **PBIX File Reality**: A `.pbix` file is not claimed until it is actually generated and placed in this repository.
+## Directory Structure
+```text
+powerbi/
+├── data/                            # Consolidated CSV data marts exported by pipeline_runner.py
+│   ├── dataset_summary.csv          # Total, legitimate, fraud, split & feature counts per dataset
+│   ├── model_comparison.csv         # Precision, Recall, F1, ROC-AUC, PR-AUC, Log Loss, CM & runtime
+│   ├── threshold_analysis.csv       # 0.05–0.95 probability sweep with FP/FN financial loss ($)
+│   ├── hyperparameter_tuning.csv    # Validation-split PR-AUC selection records
+│   ├── amount_distribution.csv      # Class-wise transaction amount statistics
+│   ├── missingness_profile.csv      # Column-level null profiling
+│   └── *.csv (optional Dataset A)   # hourly_fraud_pattern.csv, fraud_by_product.csv, fraud_by_card.csv
+├── FraudGuard_Dashboard.pbip        # 5-page Power BI Project (TMDL SemanticModel + PBIR 2.0.0 Report)
+├── FraudGuard_Dashboard.SemanticModel/
+├── FraudGuard_Dashboard.Report/
+├── powerbi_setup_guide.md           # Full Semantic Model, DAX measures & 5-page layout specification
+└── README.md
+```
 
-## Proposed Dashboard Pages
-1. **Page 1: Fraud Overview**
-   - Total transaction volume, fraud count, genuine count, fraud prevalence rate (%).
-   - Missing value indicators and join quality summary.
-2. **Page 2: Fraud Pattern Analysis**
-   - Fraud distribution by transaction amount, transaction time/hour, and high-risk categorical groupings (e.g., ProductCD, card types).
-3. **Page 3: Model Performance Comparison**
-   - Comparative metrics across all 5 Spark ML models: Precision, Recall, F1-Score, ROC-AUC, PR-AUC.
-   - Interactive model slicer and confusion matrix visualizer.
-4. **Page 4: Risk & Decision Threshold Analysis**
-   - Threshold trade-off curve (Precision vs. Recall vs. Threshold).
-   - False Positive vs. False Negative count simulation across decision thresholds (0.05 to 0.95).
-   - Flagged alert volume vs. fraud detection capture rate.
-5. **Page 5: Cross-Dataset Comparison & Academic Synthesis**
-   - Side-by-side comparison of Dataset A (IEEE-CIS) and Dataset B.
-   - Documentation of structural differences, collection contexts, and methodological boundaries.
-
-## Export Schema Plan (CSV/Parquet)
-The Spark pipeline will export:
-- `powerbi/data/model_comparison.csv`: Final evaluation metrics per model and dataset.
-- `powerbi/data/threshold_analysis.csv`: Threshold scan metrics (Precision, Recall, F1, FP, FN, Alert Rate).
-- `powerbi/data/dataset_summary.csv`: Aggregated overview metrics (Total rows, Fraud %, Missingness).
-- `powerbi/data/confusion_matrices.csv`: TP, FP, TN, FN breakdowns per classifier.
+## Refreshing Data in Power BI Desktop
+1. Execute the PySpark pipeline (`python -m src.pipeline_runner --dataset all`) to refresh all CSV tables in `powerbi/data/`.
+2. Open `powerbi/FraudGuard_Dashboard.pbip` in **Microsoft Power BI Desktop (2.159+)**.
+3. Click **Home -> Refresh** in Power BI Desktop to reload updated CSV marts into the star-schema semantic model and save `.pbix` if required for submission.

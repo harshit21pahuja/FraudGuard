@@ -27,47 +27,77 @@ except ImportError:
 def identify_column_types(
     df: DataFrame,
     target_col: str = "isFraud",
-    id_col: str = "TransactionID",
-    time_col: str = "TransactionDT",
+    id_col: str | None = "TransactionID",
+    time_col: str | None = "TransactionDT",
     missing_threshold: float = 0.80,
+    max_cat_cardinality: int = 100,
 ) -> Tuple[List[str], List[str], List[str]]:
     """Classify DataFrame columns into categorical and numerical features.
 
-    Filters out columns with excessive missingness (> missing_threshold) and excludes
+    Computes missingness across all columns in a single Spark aggregation pass,
+    filters out columns with excessive missingness (> missing_threshold) or
+    ultra-high categorical cardinality (> max_cat_cardinality), and excludes
     identifiers, time, and target columns to prevent data leakage.
     """
     total_rows = df.count()
-    exclude_cols = {target_col, id_col, time_col}
+    exclude_cols = {c for c in (target_col, id_col, time_col) if c}
 
-    categorical_cols: List[str] = []
+    candidate_fields = [f for f in df.schema.fields if f.name not in exclude_cols]
+    if not candidate_fields or total_rows == 0:
+        return [], [], []
+
+    # Single-pass Spark aggregation for all candidate column null/NaN counts
+    null_exprs = []
+    for field in candidate_fields:
+        col_name = field.name
+        data_type = field.dataType.simpleString()
+        is_float = any(t in data_type for t in ("double", "float"))
+        cond = (
+            (F.col(col_name).isNull() | F.isnan(col_name))
+            if is_float
+            else F.col(col_name).isNull()
+        )
+        null_exprs.append(F.count(F.when(cond, 1)).alias(col_name))
+
+    null_counts_row = df.select(null_exprs).collect()[0]
+
+    raw_cat_cols: List[str] = []
     numerical_cols: List[str] = []
     dropped_cols: List[str] = []
 
-    # Check null ratios per column
-    schema = df.schema
-    for field in schema.fields:
+    for field in candidate_fields:
         col_name = field.name
-        if col_name in exclude_cols:
-            continue
-
         data_type = field.dataType.simpleString()
-        # Count nulls
-        null_count = df.filter(F.col(col_name).isNull() | F.isnan(col_name) if "double" in data_type or "float" in data_type else F.col(col_name).isNull()).count()
-        missing_rate = null_count / total_rows if total_rows > 0 else 0.0
+        null_count = int(null_counts_row[col_name])
+        missing_rate = null_count / total_rows
 
         if missing_rate > missing_threshold:
             dropped_cols.append(col_name)
             continue
 
         if data_type in ("string", "boolean"):
-            categorical_cols.append(col_name)
-        elif data_type in ("int", "bigint", "double", "float", "smallint", "long"):
+            raw_cat_cols.append(col_name)
+        elif any(t in data_type for t in ("int", "bigint", "double", "float", "smallint", "long", "decimal")):
             numerical_cols.append(col_name)
+
+    # Guard OneHotEncoder against ultra-high cardinality string columns (e.g. DeviceInfo)
+    categorical_cols: List[str] = []
+    if raw_cat_cols and max_cat_cardinality > 0:
+        card_exprs = [F.approx_count_distinct(F.col(c)).alias(c) for c in raw_cat_cols]
+        card_row = df.select(card_exprs).collect()[0]
+        for c in raw_cat_cols:
+            if int(card_row[c]) <= max_cat_cardinality:
+                categorical_cols.append(c)
+            else:
+                dropped_cols.append(c)
+                logger.info(f"Dropping high-cardinality categorical '{c}' (~{int(card_row[c])} distinct values > {max_cat_cardinality}).")
+    else:
+        categorical_cols = raw_cat_cols
 
     logger.info(
         f"Feature selection: {len(numerical_cols)} numerical features, "
         f"{len(categorical_cols)} categorical features, "
-        f"{len(dropped_cols)} dropped due to >{missing_threshold*100}% nulls."
+        f"{len(dropped_cols)} dropped due to >{missing_threshold*100}% nulls or high cardinality."
     )
     return numerical_cols, categorical_cols, dropped_cols
 

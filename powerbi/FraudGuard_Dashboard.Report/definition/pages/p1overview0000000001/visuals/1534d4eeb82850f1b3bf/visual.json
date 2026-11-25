@@ -1,0 +1,60 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.13.0/schema.json",
+  "name": "1534d4eeb82850f1b3bf",
+  "position": {
+    "x": 1180,
+    "y": 20,
+    "z": 3,
+    "height": 180,
+    "width": 340,
+    "tabOrder": 3
+  },
+  "visual": {
+    "visualType": "cardVisual",
+    "query": {
+      "queryState": {
+        "Data": {
+          "projections": [
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "dataset_summary"
+                    }
+                  },
+                  "Property": "Total Fraud Cases"
+                }
+              },
+              "queryRef": "dataset_summary.Total Fraud Cases",
+              "nativeQueryRef": "Total Fraud Cases"
+            }
+          ]
+        }
+      }
+    },
+    "drillFilterOtherVisuals": true,
+    "visualContainerObjects": {
+      "title": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "text": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Fraud Cases'"
+                }
+              }
+            }
+          }
+        }
+      ]
+    }
+  }
+}

@@ -1,0 +1,139 @@
+{
+  "version": "1.1.0",
+  "diagrams": [
+    {
+      "ordinal": 0,
+      "scrollPosition": {
+        "x": 0,
+        "y": 0
+      },
+      "nodes": [
+        {
+          "location": {
+            "x": 294.28475898868885,
+            "y": 805.58488545880459
+          },
+          "nodeIndex": "amount_distribution",
+          "nodeLineageTag": "a2b3746b-9ad5-5e3a-89f8-81d0d090f031",
+          "size": {
+            "height": 272,
+            "width": 234
+          },
+          "zIndex": 0
+        },
+        {
+          "location": {
+            "x": 515.94578767416431,
+            "y": 449.69508589894
+          },
+          "nodeIndex": "dataset_summary",
+          "nodeLineageTag": "a47a1f00-a195-55af-9d9a-ec0250418e89",
+          "size": {
+            "height": 300,
+            "width": 234
+          },
+          "zIndex": 0
+        },
+        {
+          "location": {
+            "x": 584.35615197753123,
+            "y": 854.23583400654786
+          },
+          "nodeIndex": "fraud_by_card",
+          "nodeLineageTag": "6daa8b1f-dca1-5805-b569-315fc3992dbd",
+          "size": {
+            "height": 224,
+            "width": 234
+          },
+          "zIndex": 0
+        },
+        {
+          "location": {
+            "x": 809.67731027308059,
+            "y": 28.9651906543304
+          },
+          "nodeIndex": "fraud_by_product",
+          "nodeLineageTag": "9534f533-72d9-577f-815a-e40d6aca53c6",
+          "size": {
+            "height": 224,
+            "width": 234
+          },
+          "zIndex": 0
+        },
+        {
+          "location": {
+            "x": 229.11625399125285,
+            "y": 198.11575425502247
+          },
+          "nodeIndex": "hourly_fraud_pattern",
+          "nodeLineageTag": "3bea6b2d-278c-5c8d-9081-10b74cb14728",
+          "size": {
+            "height": 200,
+            "width": 234
+          },
+          "zIndex": 0
+        },
+        {
+          "location": {
+            "x": 50,
+            "y": 452.69275038164886
+          },
+          "nodeIndex": "hyperparameter_tuning",
+          "nodeLineageTag": "6da5ed92-782a-5a8f-8d16-a5016720e43c",
+          "size": {
+            "height": 296,
+            "width": 234
+          },
+          "zIndex": 0
+        },
+        {
+          "location": {
+            "x": 1000.9506629586396,
+            "y": 308.14969388195618
+          },
+          "nodeIndex": "missingness_profile",
+          "nodeLineageTag": "4aaaed1e-71f8-5bde-b8f6-966580d32528",
+          "size": {
+            "height": 176,
+            "width": 234
+          },
+          "zIndex": 0
+        },
+        {
+          "location": {
+            "x": 518.99917600766594,
+            "y": -50
+          },
+          "nodeIndex": "model_comparison",
+          "nodeLineageTag": "7af7fc0a-c4ae-5063-8046-3078bab5bcc4",
+          "size": {
+            "height": 300,
+            "width": 234
+          },
+          "zIndex": 0
+        },
+        {
+          "location": {
+            "x": 876.73859790990377,
+            "y": 539.45504036786679
+          },
+          "nodeIndex": "threshold_analysis",
+          "nodeLineageTag": "0724dd12-0a75-5ce0-a420-a60a07d31f2b",
+          "size": {
+            "height": 300,
+            "width": 234
+          },
+          "zIndex": 0
+        }
+      ],
+      "name": "All tables",
+      "zoomValue": 100,
+      "pinKeyFieldsToTop": false,
+      "showExtraHeaderInfo": false,
+      "hideKeyFieldsWhenCollapsed": false,
+      "tablesLocked": false
+    }
+  ],
+  "selectedDiagram": "All tables",
+  "defaultDiagram": "All tables"
+}

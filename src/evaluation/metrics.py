@@ -1,13 +1,16 @@
-"""Evaluation metrics and confusion matrix calculations for Spark ML models."""
+"""Evaluation metrics, loss functions, and confusion matrix calculations."""
 
-from typing import Any, Dict
 import logging
+from typing import Any, Dict, Tuple
+
+import numpy as np
 
 logging.basicConfig(level=logging.INFO, format="%(asctime)s [%(levelname)s] %(message)s")
 logger = logging.getLogger("FraudGuard.Evaluation")
 
 try:
     from pyspark.ml.evaluation import BinaryClassificationEvaluator
+    from pyspark.ml.functions import vector_to_array
     from pyspark.sql import DataFrame
     from pyspark.sql import functions as F
     PYSPARK_AVAILABLE = True
@@ -47,6 +50,30 @@ def calculate_confusion_matrix(
     return matrix
 
 
+def extract_roc_pr_arrays(
+    predictions: DataFrame,
+    label_col: str = "label",
+    prob_col: str = "probability",
+) -> Tuple[np.ndarray, np.ndarray]:
+    """Collect ground-truth binary labels and positive-class probabilities as NumPy arrays."""
+    rows = predictions.select(
+        F.col(label_col).cast("int").alias("y"),
+        vector_to_array(F.col(prob_col))[1].alias("p"),
+    ).collect()
+    y_true = np.array([int(r["y"]) for r in rows], dtype=np.int32)
+    y_prob = np.array([float(r["p"]) for r in rows], dtype=np.float64)
+    return y_true, y_prob
+
+
+def compute_binary_log_loss(y_true: np.ndarray, y_prob: np.ndarray) -> float:
+    """Compute binary cross-entropy loss (Log Loss) from probability predictions."""
+    if len(y_true) == 0:
+        return 0.0
+    p = np.clip(y_prob, 1e-15, 1.0 - 1e-15)
+    loss = -np.mean(y_true * np.log(p) + (1.0 - y_true) * np.log(1.0 - p))
+    return round(float(loss), 5)
+
+
 def evaluate_predictions(
     predictions: DataFrame,
     model_name: str,
@@ -57,11 +84,9 @@ def evaluate_predictions(
     """Calculate comprehensive evaluation metrics for imbalanced financial fraud detection.
 
     Returns:
-      - Precision
-      - Recall
-      - F1-Score
-      - ROC-AUC
-      - PR-AUC (Precision-Recall Area Under Curve)
+      - Precision, Recall, F1-Score
+      - ROC-AUC, PR-AUC (Precision-Recall Area Under Curve)
+      - Log Loss (Binary Cross-Entropy Loss Function)
       - Accuracy (Supplementary)
       - Confusion Matrix: TP, TN, FP, FN
     """
@@ -81,9 +106,9 @@ def evaluate_predictions(
     )
     accuracy = round((tp + tn) / total, 4) if total > 0 else 0.0
 
-    # Compute ROC-AUC and PR-AUC using Spark's BinaryClassificationEvaluator
     roc_auc = 0.0
     pr_auc = 0.0
+    log_loss = 0.0
 
     if has_raw_predictions and "rawPrediction" in predictions.columns:
         evaluator_roc = BinaryClassificationEvaluator(
@@ -102,9 +127,17 @@ def evaluate_predictions(
         except Exception as e:
             logger.warning(f"Could not compute AUC metrics for {model_name}: {e}")
 
+    if "probability" in predictions.columns:
+        try:
+            y_true, y_prob = extract_roc_pr_arrays(predictions, label_col=label_col)
+            log_loss = compute_binary_log_loss(y_true, y_prob)
+        except Exception as e:
+            logger.warning(f"Could not compute log_loss for {model_name}: {e}")
+
     logger.info(
         f"Evaluation [{model_name}]: Precision={precision}, Recall={recall}, "
-        f"F1={f1}, ROC-AUC={roc_auc}, PR-AUC={pr_auc}, TP={tp}, FP={fp}, FN={fn}"
+        f"F1={f1}, ROC-AUC={roc_auc}, PR-AUC={pr_auc}, LogLoss={log_loss}, "
+        f"TP={tp}, FP={fp}, FN={fn}"
     )
 
     return {
@@ -119,5 +152,6 @@ def evaluate_predictions(
         "f1_score": f1,
         "roc_auc": roc_auc,
         "pr_auc": pr_auc,
+        "log_loss": log_loss,
         "accuracy": accuracy,
     }
